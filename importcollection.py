@@ -5,6 +5,7 @@ Created on Mon Aug 21 10:01:05 2017
 @author: ivan
 """
 
+
 from tecmodels import db
 db.create_all()
 
