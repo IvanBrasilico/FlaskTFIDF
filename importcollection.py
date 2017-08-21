@@ -9,7 +9,8 @@ from tecmodels import db
 db.create_all()
 
 from tecmodels import Collection
-Collection1 = Collection("teste")
+Collection1 = Collection("TEC")
 db.session.add(Collection1)
 
 db.session.commit()
+
