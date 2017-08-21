@@ -24,7 +24,7 @@ def add_numbers():
     """Get words, return ranked results"""
     collection_name = request.args.get('collection_name', 0, type=str)
     words = request.args.get('words', 0, type=str)
-    return jsonify("TODO")
+    return jsonify([{"result":"TEST1"}, {"result":"TEST2" }])
 
 
 @app.route('/')

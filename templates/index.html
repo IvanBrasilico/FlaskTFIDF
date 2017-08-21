@@ -7,8 +7,16 @@
         a: $('input[name="a"]').val(),
         b: $('input[name="b"]').val()
       }, function(data) {
-        $('#result').text(data.result);
-        $('input[name=a]').focus().select();
+        $('#result').text(data[0].result);
+$("#records_table tbody tr").remove();
+       $.each(data, function(i, item) {
+        $('<tr>').append(
+            $('<td>').text(item.result)
+
+        ).appendTo('#records_table');
+        
+    });
+   $('input[name="a"]').focus().select();
       });
       return false;
     };
@@ -26,5 +34,16 @@
   <input type="text" size="5" name="a"> +
   <input type="text" size="5" name="b"> =
   <span id="result">?</span>
+<table id="records_table" border='1'>
+<thead>
+    <tr>
+        <th>Result</th>
+
+    </tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
 <p><a href=# id="calculate">calculate server side</a>
 {% endblock %}
