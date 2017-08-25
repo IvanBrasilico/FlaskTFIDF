@@ -28,8 +28,12 @@ class Document(db.Model):
     collection = db.relationship("Collection", back_populates="documents")
     title = db.Column(db.String(80), unique=True)
     contents = db.Column(db.String(1000))
-    def __init__(self, title):
-        self.title = title
+
+    def __init__(self, pcollection, ptitle, pcontent):
+        self.collection = pcollection
+        self.title = ptitle
+        self.contents = pcontent
+        
     def __repr__(self):
         return '<Title %r>' % self.title
 
@@ -39,11 +43,11 @@ Collection.documents = db.relationship(
 class Word(db.Model):
     __tablename__ = 'words'
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(40))
+    word = db.Column(db.String(40))
     def __init__(self, content):
         self.content = content
     def __repr__(self):
-        return '<Word-id %r>' % self.content, self.id
+        return '<Word-id %r>' % self.word, self.id
     
 class WordOccurrence(db.Model):
     __tablename__ = 'word_occurrences'

@@ -11,6 +11,9 @@
     The rank is a TF-IDF pontuaction of the document on relation to the 
     words that are being searched
     The Collection must be fed by another application
+    The embedded User Interface is just an example
+    Ideally, the User Interface must be another application too, even
+    a static served HTML5 Application on React, Vue or plan HTML/CSS/JQUERY
     Initiated from the Flask Oficial website example
     :copyright: (c) 2017 by Ivan Brasilico.
     :license: GPL, see LICENSE for more details.
