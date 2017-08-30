@@ -4,46 +4,133 @@
   $(function() {
     var submit_form = function(e) {
       $.getJSON($SCRIPT_ROOT + '/_rank', {
-        a: $('input[name="a"]').val(),
-        b: $('input[name="b"]').val()
+        words: $('input[name="words"]').val(),
       }, function(data) {
-        $('#result').text(data[0].result);
-$("#records_table tbody tr").remove();
+        $('#message').text('Entrou!');
+        console.log(data);
+        $('#records_table tbody tr').remove();
        $.each(data, function(i, item) {
         $('<tr>').append(
-            $('<td>').text(item.result)
-
+            $('<td>').text(item.title),
+            $('<td>').text(item.contents)
         ).appendTo('#records_table');
-        
-    });
-   $('input[name="a"]').focus().select();
+        });
+       $('input[name="words"]').focus().select();
       });
       return false;
     };
-    $('a#calculate').bind('click', submit_form);
-    $('input[type=text]').bind('keydown', function(e) {
+    var submit_form2 = function(e) {
+      $.getJSON($SCRIPT_ROOT + '/_test', {
+      }, function(data) {
+        $('#message').text('Entrou!');
+        console.log(data);
+        $('#records_table tbody tr').remove();
+       $.each(data, function(i, item) {
+        $('<tr>').append(
+            $('<td>').text(item.title),
+            $('<td>').text(item.contents)
+        ).appendTo('#records_table');
+        });
+       $('input[name="words"]').focus().select();
+      });
+      return false;
+    };
+    $('a#rank').bind('click', submit_form);
+    $('a#test').bind('click', submit_form2);
+    $('input[type="text"]').bind('keydown', function(e) {
       if (e.keyCode == 13) {
         submit_form(e);
       }
     });
-    $('input[name=a]').focus();
+    $('input[name="words"]').focus();
   });
+  $( function() {
+    var availableTags;
+    
+    var update_drop_down = function(e) {
+      $.getJSON($SCRIPT_ROOT + '/_correct', {
+        words: $('input[name="words"]').val(),
+      }, function(data) {
+        console.log(data);
+        availableTags = data;
+        $( "#words" ).autocomplete({
+              source: availableTags
+        });
+      });
+      return false;
+    };
+    $('a#dropdown').bind('click', update_drop_down);
+  } );
+$( function() {
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+        var n = term.split(" ");
+        return n[n.length - 1];
+    }
+ 
+    $( "#birds" )
+      // don't navigate away from the field on tab when selecting an item
+      .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        source: function( request, response ) {
+          $.getJSON( "_correct", {
+            words: extractLast( request.term )
+          }, response );
+        },
+        search: function() {
+          // custom minLength
+          var term = extractLast( this.value );
+          if ( term.length < 2 ) {
+            return false;
+          }
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = this.value.split(" ")
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( " " );
+          return false;
+        }
+      });
+  } );
+  </script>
 </script>
 <h1>jQuery Example</h1>
 <p>
-  <input type="text" size="5" name="a"> +
-  <input type="text" size="5" name="b"> =
+  <input type="text" size="50" name="words" id="words">
   <span id="result">?</span>
+  <span id="message">#</span>
 <table id="records_table" border='1'>
 <thead>
     <tr>
-        <th>Result</th>
-
+        <th>Subitem</th>
+        <th>Descrição completa</th>
     </tr>
 </thead>
 <tbody>
 </tbody>
 </table>
+<p><a href=# id="rank">Rank</a>
+<p><a href=# id="test">Test</a>
+<p><a href=# id="dropdown">Drop-down</a>
+<div class="ui-widget">
+  <label for="birds">Birds: </label>
+  <input id="birds" size="50">
+</div>
 
-<p><a href=# id="calculate">calculate server side</a>
 {% endblock %}
