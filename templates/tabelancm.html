@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type="text/javascript">
+$( function() {
+$("#searchInput").keyup(function () {
+    var rows = $("#fbody").find("tr").hide();
+    if (this.value.length) {
+        var data = this.value.split(" ");
+        $.each(data, function (i, v) {
+            rows.filter(":contains('" + v + "')").show();
+        });
+    } else rows.show();
+});
+});
+</script>
+<h1>jQuery Table Example</h1>
+<!--https://stackoverflow.com/questions/17074687/filtering-table-rows-using-jquery
+-->
+<input id="searchInput" value="Type To Filter">
+<br/>
+<table id="ncm_table" border='1'>
+<thead>
+    <tr>
+        <th>Código</th>
+        <th>Descrição</th>
+        <th>ID</th>
+    </tr>
+</thead>
+<tbody id="fbody">
+{% for linha in ncm %}
+<tr>
+{% for elem in linha %}
+    <td>{{ elem }}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+
+{% endblock %}

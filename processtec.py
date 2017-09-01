@@ -108,14 +108,16 @@ def montaTECResumo(plistaNCM): # Monta linhas da TEC que contém II com descriç
         r = r + 1
     return listaTECResumo
     
-def tokenize_to_words(sentence, splitter = ""):
+def tokenize_to_words(sentence, splitter = " "):
     """Generator of words tokens
     Usage: for word in tokenize_to_words("Tinha uma pedra no meio do caminho", " "):
                do something
     """
     listofwords = sentence.split(splitter)
+    result = []
     for word in listofwords:
-            if ((len(word)>3) and (stopwords.count(word)==0)):
-                word=somente_letras_e_numeros(word) # Tira tudo que não for A-B e 0-9
-                word=word.upper()
-                return word
+        if ((len(word)>3) and (stopwords.count(word)==0)):
+            word=somente_letras_e_numeros(word) # Tira tudo que não for A-B e 0-9
+            word=word.strip().lower()
+            result.append(word)
+    return result
