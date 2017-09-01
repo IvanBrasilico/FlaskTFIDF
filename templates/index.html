@@ -1,16 +1,68 @@
-{% extends "layout.html" %}
-{% block body %}
+{% extends "bootstrap/base.html" %}
+{% block title %}Collection Finder - filtered search page{% endblock %}
+
+{% block navbar %}
+{{nav.mynavbar.render()}}
+{% endblock %}
+
+{% block content %}
+<div id="main" class="container-fluid">
+     <div id="top" class="row">
+        <h2>Document ranking</h2>
+           <div class="col-md-2">
+                <h3></h3>
+            </div>
+            <div class="col-md-8">
+                 <div class="ui-widget">
+                    <input id="words" size="50">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="btnrank" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <a href="help.html" class="btn btn-primary pull-right h2">Help</a>
+            </div>
+     </div> <!-- /#top -->
+     <hr />
+     <div id="list" class="row">
+        <div class="table-responsive col-md-12">
+        <span id="errors"></span>
+        <table class="table table-striped" cellspacing="0" cellpadding="0"
+         id="records_table">
+        <thead>
+            <tr>
+                <th>Score</th>
+                <th>Subitem</th>
+                <th>Descrição completa</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        </div>
+     </div> <!-- /#list -->
+     <div id="bottom" class="row">
+        Copyleft IvanBrasilico 2017 - All stuff GPLv3 Licensed except explicited or from outer sources
+     </div> <!-- /#bottom -->
+ </div>  <!-- /#main -->
+<script type="text/javascript"
+  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> <!-- autocomplete -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
   $(function() {
     var submit_form = function(e) {
-      $.getJSON($SCRIPT_ROOT + '/_rank', {
+      $.getJSON('/_rank', {
         words: $('input[name="words"]').val(),
       }, function(data) {
-        $('#message').text('Entrou!');
         console.log(data);
         $('#records_table tbody tr').remove();
        $.each(data, function(i, item) {
         $('<tr>').append(
+            $('<td>').text(item.score),
             $('<td>').text(item.title),
             $('<td>').text(item.contents)
         ).appendTo('#records_table');
@@ -19,24 +71,7 @@
       });
       return false;
     };
-    var submit_form2 = function(e) {
-      $.getJSON($SCRIPT_ROOT + '/_test', {
-      }, function(data) {
-        $('#message').text('Entrou!');
-        console.log(data);
-        $('#records_table tbody tr').remove();
-       $.each(data, function(i, item) {
-        $('<tr>').append(
-            $('<td>').text(item.title),
-            $('<td>').text(item.contents)
-        ).appendTo('#records_table');
-        });
-       $('input[name="words"]').focus().select();
-      });
-      return false;
-    };
-    $('a#rank').bind('click', submit_form);
-    $('a#test').bind('click', submit_form2);
+    $('button#btnrank').bind('click', submit_form);
     $('input[type="text"]').bind('keydown', function(e) {
       if (e.keyCode == 13) {
         submit_form(e);
@@ -46,7 +81,6 @@
   });
   $( function() {
     var availableTags;
-    
     var update_drop_down = function(e) {
       $.getJSON($SCRIPT_ROOT + '/_correct', {
         words: $('input[name="words"]').val(),
@@ -59,8 +93,7 @@
       });
       return false;
     };
-    $('a#dropdown').bind('click', update_drop_down);
-  } );
+  });
 $( function() {
     function split( val ) {
       return val.split( /,\s*/ );
@@ -69,8 +102,7 @@ $( function() {
         var n = term.split(" ");
         return n[n.length - 1];
     }
- 
-    $( "#birds" )
+    $( "#words" )
       // don't navigate away from the field on tab when selecting an item
       .on( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -107,30 +139,8 @@ $( function() {
           return false;
         }
       });
-  } );
+  });
   </script>
 </script>
-<h1>jQuery Example</h1>
-<p>
-  <input type="text" size="50" name="words" id="words">
-  <span id="result">?</span>
-  <span id="message">#</span>
-<table id="records_table" border='1'>
-<thead>
-    <tr>
-        <th>Subitem</th>
-        <th>Descrição completa</th>
-    </tr>
-</thead>
-<tbody>
-</tbody>
-</table>
-<p><a href=# id="rank">Rank</a>
-<p><a href=# id="test">Test</a>
-<p><a href=# id="dropdown">Drop-down</a>
-<div class="ui-widget">
-  <label for="birds">Birds: </label>
-  <input id="birds" size="50">
-</div>
 
 {% endblock %}

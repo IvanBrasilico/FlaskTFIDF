@@ -12,12 +12,14 @@ It is always necessary to set a collection
 @author: IvanBrasilico https://github.com/IvanBrasilico/
 
 """
-from tecmodels import Collection, Document, Word, WordOccurrence
+import math
+from collections import Counter
 # from sqlalchemy.exc import InterfaceError
 from sqlalchemy import func
 from sqlalchemy import text
-import math
-from collections import OrderedDict
+from sqlalchemy import or_
+from sqlalchemy import and_
+from tecmodels import Collection, Document, Word, WordOccurrence
 
 
 class CollectionManager():
@@ -72,6 +74,8 @@ class CollectionManager():
         """
         wordmodellist = []
         wordlist = ptokenizer(pdocument.contents)
+        doclength = len(wordlist)     # Could be calculated on demand from wo
+        pdocument.length = doclength  # Store for better performance
         for aword in wordlist:
             # TODO: See best aproach to make unique words (Ignore DBERROR? SEARCH? MEMORY SET?)
             one_word = self.session.query(Word).filter_by(atoken=aword).first()
@@ -128,21 +132,55 @@ class CollectionManager():
             docs_tf[row['docid']] = row['tf']
         return docs_tf
 
-    def tf_idf(self, word, k=1.2, b=0.75):
+    def tf_idf(self, words, k=1.2, b=0.75):
         """Okapi BM25 implementation"""
-        C     = self.collection_lenght()
+        C = self.collection_lenght()
         avgdl = self.avg_dl()
-        docs  = self.tf(word)
-        ndocs = len(docs)
-        idf   = math.log(C - ndocs + 0.5 / ndocs + 0.5)
-        score = []
-        for docid, tf in docs.items():
-            adocument = self.session.query(Document).filter_by(id=docid).one()
-            D = avgdl  # adocument.wordcount
-            rank = idf * ((tf * (k+1)) / (tf + k + ((1 - b) + (b * D/avgdl))))
-            score.append((
-                        rank,
-                        adocument.title,
-                        adocument.contents
-            ))
-        return sorted(score, key=lambda rank: rank[0], reverse=True)
+        score = Counter()
+        docs = {}
+        words = words.split(" ")
+        for word in words:
+            docs = self.tf(word)
+            ndocs = len(docs)
+            try:
+                idf = math.log((C - ndocs + 0.5) / (ndocs + 0.5))
+            except ZeroDivisionError as e:
+                print(word)
+                print(ndocs)
+                print(e)
+            for docid, tf in docs.items():
+                adocument = self.session.query(Document).filter_by(id=docid).one()
+                D = adocument.length
+                rank = idf * ((tf * (k+1)) / (tf + k + ((1 - b) + (b * D/avgdl))))
+                score[docid] += rank
+                docs[docid] = adocument
+        alist = []
+        for docid, doc in docs.items():
+            alist.append({'score': score[docid],
+                          'title': doc.title,
+                          'contents': doc.contents})
+        return sorted(alist, key=lambda rank: rank['score'], reverse=True)
+
+    def tf_idf_cached(self, words, k=1.3, b=0.75):
+        """TODO: Create an optimized in memory Okapi BM25 implementation
+        This version will retrieve all statistics from the DB
+        once when first called (like a Singleton) and mantain it for
+        latter calls.
+        The statistics will be on arrays and variables for faster
+        calculation (otimized for speed, not for memory usage)"""
+
+    def filter_documents(self, title_filter, contents_filter="%"):
+        """Traditional SELECT FROM documents WHERE LIKE
+        Returns a list of documents"""
+        if not self.my_collection:
+            return None
+        document_list = self.session.query(Document).filter(
+            Document.collection_id == self.my_collection.id,
+            or_(Document.title.ilike(title_filter),
+                Document.contents.ilike(contents_filter))
+            ).all()
+        result = []
+        for document in document_list:
+            result.append({"title": document.title,
+                           "contents": document.contents})
+        return result

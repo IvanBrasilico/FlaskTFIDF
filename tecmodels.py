@@ -38,6 +38,7 @@ class Document(Base):
     collection = relationship("Collection", back_populates="documents")
     title = Column(String(80), unique=True)
     contents = Column(String(1000))
+    length = Column(Integer)
 
     def __init__(self, pcollection, ptitle, pcontent):
         self.collection = pcollection
@@ -46,10 +47,10 @@ class Document(Base):
 
     def __repr__(self):
         return '<Title %r>' % self.title
-    
+
     def as_dict(self):
        return {'title': self.title, 'contents': self.contents}
-    
+
 
 Collection.documents = relationship(
     "Document", order_by=Document.id, back_populates="collection")
@@ -80,6 +81,6 @@ class WordOccurrence(Base):
 
 #Document.words = relationship(
 #    "WordOccurrence", order_by=WordOccurrence.id, back_populates="document")
-    
+
 #Word.documents = relationship(
 #    "WordOccurrence", order_by=WordOccurrence.id, back_populates="word")
