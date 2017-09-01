@@ -1,55 +1,20 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}Collection Finder - filtered search page{% endblock %}
+
+{% block title %}
+Collection Finder - filtered search page
+{% endblock %}
+
+{% block head %}
+{{super()}}
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+{% endblock %}
 
 {% block navbar %}
 {{nav.mynavbar.render()}}
 {% endblock %}
 
-{% block content %}
-<div id="main" class="container-fluid">
-     <div id="top" class="row">
-        <h2>Document ranking</h2>
-           <div class="col-md-2">
-                <h3></h3>
-            </div>
-            <div class="col-md-8">
-                 <div class="ui-widget">
-                    <input id="words" size="50">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" id="btnrank" type="submit">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <a href="help.html" class="btn btn-primary pull-right h2">Help</a>
-            </div>
-     </div> <!-- /#top -->
-     <hr />
-     <div id="list" class="row">
-        <div class="table-responsive col-md-12">
-        <span id="errors"></span>
-        <table class="table table-striped" cellspacing="0" cellpadding="0"
-         id="records_table">
-        <thead>
-            <tr>
-                <th>Score</th>
-                <th>Subitem</th>
-                <th>Descrição completa</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        </table>
-        </div>
-     </div> <!-- /#list -->
-     <div id="bottom" class="row">
-        Copyleft IvanBrasilico 2017 - All stuff GPLv3 Licensed except explicited or from outer sources
-     </div> <!-- /#bottom -->
- </div>  <!-- /#main -->
-<script type="text/javascript"
-  src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> <!-- autocomplete -->
+{% block scripts %}
+    {{ super() }}
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
@@ -140,7 +105,50 @@ $( function() {
         }
       });
   });
-  </script>
 </script>
+{% endblock %}
 
+{% block content %}
+<div id="main" class="container-fluid">
+     <div id="top" class="row">
+        <h2>Document ranking</h2>
+           <div class="col-md-2">
+                <h3></h3>
+            </div>
+            <div class="col-md-8">
+                 <div class="ui-widget">
+                        <input id="words" name="words" size="50">
+                </div>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="btnrank" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+            </div>
+            <div class="col-md-2">
+                <a href="help.html" class="btn btn-primary pull-right h2">Help</a>
+            </div>
+     </div> <!-- /#top -->
+     <hr />
+     <div id="list" class="row">
+        <div class="table-responsive col-md-12">
+        <span id="errors"></span>
+        <table class="table table-striped" cellspacing="0" cellpadding="0"
+         id="records_table">
+        <thead>
+            <tr>
+                <th>Score</th>
+                <th>Subitem</th>
+                <th>Descrição completa</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+        </table>
+        </div>
+     </div> <!-- /#list -->
+     <div id="bottom" class="row">
+        Copyleft IvanBrasilico 2017 - All stuff GPLv3 Licensed except explicited or from outer sources
+     </div> <!-- /#bottom -->
+ </div>  <!-- /#main -->
 {% endblock %}
