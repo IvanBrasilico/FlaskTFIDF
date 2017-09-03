@@ -12,8 +12,6 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
-
-
 #app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/ivan/flask/flaskTEC/tecrank/test.db'
 #app.config['SQLALCHEMY_ECHO'] = True
