@@ -91,11 +91,22 @@ def document_content(document_id):
                         id=document_id).one()
     return jsonify(one_document.contents)
 
+
 @app.route('/_collections')
-def collections(docment_id):
-    collections = session.query(Collection).all()
-    return jsonify(collections)
-    
+def collections():
+    collection_list = session.query(Collection).all()
+    result = []
+    for collection in collection_list:
+        result.append({'id': collection.id, 'name': collection.name})
+    return jsonify(result)
+
+
+@app.route('/_set_collection/<int:collection_id>')
+def set_collection(collection_id):
+    one_collection = session.query(Collection).filter_by(
+                        id=collection_id).one()
+    return jsonify(one_collection.id)
+
 
 if __name__ == '__main__':
     app.run()

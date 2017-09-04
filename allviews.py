@@ -10,7 +10,6 @@ In production, they could be separate apps or
 frozen.py can be used to generate static html for the front-end
 """
 from webapp import app
-from webapp import nav
 import jsonapp
 
 if __name__ == '__main__':

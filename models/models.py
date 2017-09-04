@@ -28,6 +28,8 @@ class Collection(Base):
         self.name = name
     def __repr__(self):
         return '<Name %r>' % self.name
+    def as_dict(self):
+        return {'id': self.id, 'name': self.name}
 
 class Document(Base):
     __tablename__ = 'documents'
@@ -37,15 +39,12 @@ class Document(Base):
     title = Column(String(80), unique=True)
     contents = Column(String(1000))
     length = Column(Integer)
-
     def __init__(self, pcollection, ptitle, pcontent):
         self.collection = pcollection
         self.title = ptitle
         self.contents = pcontent
-
     def __repr__(self):
         return '<Title %r>' % self.title
-
     def as_dict(self):
        return {'title': self.title, 'contents': self.contents}
 
