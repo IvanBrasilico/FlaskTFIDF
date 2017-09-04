@@ -5,9 +5,9 @@ Created on Sun Aug 27 16:31:52 2017
 @author: IvanBrasilico
 
 """
-import spelling_corrector as spell
+import utils.spelling_corrector as spell
 from sqlalchemy.orm import sessionmaker
-from tecmodels import Word, engine
+from models.models import Word, engine
 
 Session = sessionmaker(bind=engine)
 session = Session()

@@ -6,9 +6,9 @@ Created on Mon Aug 21 10:01:05 2017
 
 """
 from sqlalchemy.orm import sessionmaker
-from tecmodels import Base, engine
-from collectionmanager import CollectionManager
-import processtec as pt
+from models.tecmodels import Base, engine
+from models.collectionmanager import CollectionManager
+import batch.processtec as pt
 
 listaTEC = pt.montaTEC()
 listaNCM = pt.montaNCM(listaTEC)

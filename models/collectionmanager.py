@@ -18,8 +18,7 @@ from collections import Counter
 from sqlalchemy import func
 from sqlalchemy import text
 from sqlalchemy import or_
-from sqlalchemy import and_
-from tecmodels import Collection, Document, Word, WordOccurrence
+from models.models import Collection, Document, Word, WordOccurrence
 
 
 class CollectionManager():

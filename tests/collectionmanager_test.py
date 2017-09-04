@@ -5,8 +5,8 @@ Created on Tue Aug 29 20:54:36 2017
 @author: ivan https://github.com/IvanBrasilico/
 """
 from sqlalchemy.orm import sessionmaker
-from tecmodels import engine, Collection
-from collectionmanager import CollectionManager
+from models.models import engine, Collection
+from models.collectionmanager import CollectionManager
 
 Session = sessionmaker(bind=engine)
 session = Session()

@@ -1,0 +1,1 @@
+/home/ivan/flask/flaskTEC/tecrank/static/js/jquery-3.2.1.js

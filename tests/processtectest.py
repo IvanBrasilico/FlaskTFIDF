@@ -6,7 +6,7 @@ Created on Sat Aug 26 09:52:25 2017
 
 Test module processtec
 """
-import processtec as pt
+import batch.processtec as pt
 
 listaTEC = pt.montaTEC()
 listaNCM = pt.montaNCM(listaTEC)

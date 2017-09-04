@@ -5,24 +5,31 @@
  <script src="/static/js/bootstrap.js"></script>
  <script type="text/javascript">
   $(function() {
-    var submit_form = function(e) {
-      $.getJSON('/_filter_documents', {
-        afilter: $('input[name="afilter"]').val(),
-      }, function(data) {
-        console.log(data);
-        $('#records_table tbody tr').remove();
-       $.each(data, function(i, doc) {
-        $('<tr>').append(
-            $('<td>').text(doc.title),
-            $('<td>').text(doc.contents)
-        ).appendTo('#records_table');
+   $(document).ready(function() {
+        $.getJSON("/_documents", function(data) {
+            console.log(data);
+            var listitems;
+            var $select = $('#titles');                        
+            $select.find('option').remove();
+            $.each(data, function(i, item){
+                listitems += '<option value=' + item.id + '>' + item.title + '</option>';
+            });
+            $select.append(listitems);
         });
-       $('input[name="afilter"]').focus().select();
+       $('input[name="words"]').focus().select();
+   });
+  });
+  $(function() {
+    var submit_form = function(e) {
+      $.getJSON('/_document_content/'+$('#titles').val(), {
+      }, function(data) {
+            console.log(data);
+            $('#contents').text(data);
       });
       return false;
     };
-    $('button#btnfilter').bind('click', submit_form);
-    $('input[type="text"]').bind('keydown', function(e) {
+    $('#titles').bind('change', submit_form);
+    $('#down').bind('keydown', function(e) {
       if (e.keyCode == 13) {
         submit_form(e);
       }
@@ -41,12 +48,9 @@
             </div>
             <div class="col-md-8">
                 <div class="input-group h2">
-                    <input name="afilter" class="form-control" id="afilter" type="text" placeholder="Entre um termo para pesquisar">
-                    <span class="input-group-btn">
-                        <button class="btn btn-primary" id="btnfilter" type="submit">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
+                    <select id="titles" width="90%">
+                    <textarea id="contents">
+                    </textarea>
                 </div>
             </div>
             <div class="col-md-2">
