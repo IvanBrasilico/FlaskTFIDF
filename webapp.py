@@ -24,10 +24,12 @@ from flask_nav import Nav
 from flask_nav.elements import Navbar, View
 from flask_cors import CORS
 
-app = Flask(__name__, static_url_path='/static') 
+
+app = Flask(__name__, static_url_path='/static')
 CORS(app)
 Bootstrap(app)
 nav = Nav()
+
 
 @app.route('/')
 def index():
@@ -43,20 +45,23 @@ def filter():
 def selection():
     return render_template('selection.html')
 
+
 @app.route('/collection.html')
 def collection():
     return render_template('collection.html')
+
 
 @nav.navigation()
 def mynavbar():
     return Navbar(
         'Collections Finder',
         View('Rank', 'index'),
-        View('Filtered', 'filter'),  
-        View('Selection', 'selection'),  
+        View('Filtered', 'filter'),
+        View('Selection', 'selection'),
         View('Change Collection', 'collection'),
     )
-nav.init_app(app)
 
+
+nav.init_app(app)
 if __name__ == '__main__':
     app.run()

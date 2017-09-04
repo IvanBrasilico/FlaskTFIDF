@@ -85,6 +85,19 @@ def filter_documents():
     return jsonify(result)
 
 
+@app.route('/_documents')
+def documents():
+    selected_collection_id = 1
+    collection = session.query(Collection).filter(
+            Collection.id == selected_collection_id).one()
+    result = []
+    document_list = collection.documents
+    for document in document_list:
+        result.append({"id": document.id,
+                       "title": document.title})
+    return jsonify(result)
+
+
 @app.route('/_document_content/<int:document_id>')
 def document_content(document_id):
     one_document = session.query(Document).filter_by(

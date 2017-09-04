@@ -6,13 +6,13 @@
  <script type="text/javascript">
   $(function() {
    $(document).ready(function() {
-        $.getJSON("/_collections", function(data) {
+        $.getJSON("/_documents", function(data) {
             console.log(data);
             var listitems;
-            var $select = $('#collections');                        
+            var $select = $('#titles');                        
             $select.find('option').remove();
             $.each(data, function(i, item){
-                listitems += '<option value=' + item.id + '>' + item.name + '</option>';
+                listitems += '<option value=' + item.id + '>' + item.title + '</option>';
             });
             $select.append(listitems);
         });
@@ -21,13 +21,14 @@
   });
   $(function() {
     var submit_form = function(e) {
-    
-      $.getJSON('/_set_collection', {
-        collection_id: $('#collections').val(),
+      $.getJSON('/_document_content/'+$('#titles').val(), {
+      }, function(data) {
+            console.log(data);
+            $('#contents').text(data);
       });
       return false;
     };
-    $('button#btnOK').bind('click', submit_form);
+    $('#titles').bind('change', submit_form);
     $('#down').bind('keydown', function(e) {
       if (e.keyCode == 13) {
         submit_form(e);
@@ -47,12 +48,9 @@
             </div>
             <div class="col-md-8">
                 <div class="input-group h2">
-                    <select id="collections" width="90%">
-</select><span class="input-group-btn">
-                        <button class="btn btn-primary" id="btnOK" type="submit">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>
-                    </span>
+                    <select id="titles" width="90%">
+                    <textarea id="contents">
+                    </textarea>
                 </div>
             </div>
             <div class="col-md-2">
