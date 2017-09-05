@@ -9,6 +9,19 @@ and retrieving tf_idf parameters
 
 It is always necessary to set a collection
 
+A collection can have subcollections based on preprocessing rules.
+For example TEC, to be ranked, is beMtter to have the hierarquical structure
+joined on a single doc. To be filterer, it is better to stay with the entire
+tree original. And then Capítulos, seções e notas can be searched even by rank
+or by selection of Capítulo
+
+This class if for implementing methods for managing this collections.
+Mouting collection, tokenizing, normalizing, preprocessing, lematize/stemize,
+making decisions about filtering and segmentation, ngrams selection, thesaurus,
+word vectores, all these are specialized work to be done BEFORE
+feeeding this class that are absolutely crucial to posterior success on
+searches, classification, and any ML/IR/NLP tasks
+
 @author: IvanBrasilico https://github.com/IvanBrasilico/
 
 """
