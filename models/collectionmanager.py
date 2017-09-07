@@ -42,11 +42,16 @@ class CollectionManager():
         self.my_collection = pcollection
 
     def add_collection(self, collection_name):
-        """Receives the collection name and sets the collection"""
+        """Receives the collection name and retrieve or add the collection
+        Returns true if the collection already exists"""
+        self.my_collection = self.session.query(Collection).filter(
+                                Collection.name == collection_name).first()
+        if self.my_collection is not None:
+            return self.my_collection, True
         self.my_collection = Collection(collection_name)
         self.session.add(self.my_collection)
         self.session.commit()
-        return self.my_collection
+        return self.my_collection, False
 
     def add_document(self, ptitle, pcontent):
         """Receives title and content and adds a document
@@ -144,7 +149,7 @@ class CollectionManager():
             docs_tf[row['docid']] = row['tf']
         return docs_tf
 
-    def tf_idf(self, words, k=1.2, b=0.75):
+    def bm25(self, words, k=1.4, b=0.75):
         """Okapi BM25 implementation"""
         C = self.collection_lenght()
         avgdl = self.avg_dl()
@@ -152,14 +157,10 @@ class CollectionManager():
         docs = {}
         words = words.split(" ")
         for word in words:
+            word = word.strip()
             docs = self.tf(word)
             ndocs = len(docs)
-            try:
-                idf = math.log((C - ndocs + 0.5) / (ndocs + 0.5))
-            except ZeroDivisionError as e:
-                print(word)
-                print(ndocs)
-                print(e)
+            idf = math.log((C - ndocs + 0.5) / (ndocs + 0.5))
             for docid, tf in docs.items():
                 adocument = self.session.query(Document).filter_by(id=docid).one()
                 D = adocument.length

@@ -14,36 +14,14 @@ from models.collectionmanager import CollectionManager
 from flask_cors import CORS
 
 if __name__ == '__main__':
-    app = Flask(__name__, static_url_path='/static') 
+    app = Flask(__name__, static_url_path='/static')
     CORS(app)
 else:
     from webapp import app
 
 Session = sessionmaker(bind=engine)
 session = Session()
-
-@app.route('/_rank')
-def rank():
-    """Get words, return ranked results"""
-    collection_name = request.args.get('collection_name', 0, type=str)
-    words = request.args.get('words', 0, type=str)
-    result = []
-    if words and isinstance(words, str):
-        collection_name = 'TEC'
-        collection = session.query(Collection).filter_by(name=collection_name).one()
-        manager = CollectionManager(session, collection)
-        result = manager.tf_idf(words)
-        """for word in words:
-            one_word = session.query(Word).filter_by(atoken=word).first()
-            if one_word:
-                for occurrence in session.query(WordOccurrence).filter_by(
-                    word_id=one_word.id).all():
-                    document_id = occurrence.document_id
-                    one_document = session.query(Document).filter_by(
-                        id=document_id).first()
-                    result.append(one_document.as_dict())
-                    """
-    return jsonify(result)
+selected_collection_id = 1
 
 
 @app.route('/_test')
@@ -52,10 +30,22 @@ def test():
                     {"title": "2", "contents": "TESTE 2"}])
 
 
+@app.route('/_rank')
+def rank():
+    """Get words, return ranked results"""
+    words = request.args.get('words', 0, type=str)
+    result = []
+    if words and isinstance(words, str):
+        collection = session.query(Collection).filter_by(
+                                               id=selected_collection_id).one()
+        manager = CollectionManager(session, collection)
+        result = manager.bm25(words)
+    return jsonify(result)
+
+
 @app.route('/_correct')
 def correct():
     """Get words, return ranked results"""
-    collection_name = request.args.get('collection_name', 0, type=str)
     words = request.args.get('words', 0, type=str)
     all_options = []
     if words and isinstance(words, str):
@@ -74,10 +64,9 @@ def correct():
 
 @app.route('/_filter_documents')
 def filter_documents():
-    collection_name = request.args.get('collection_name', 0, type=str)
     afilter = request.args.get('afilter', 0, type=str)
-    collection_name = 'TEC'
-    collection = session.query(Collection).filter_by(name=collection_name).one()
+    collection = session.query(Collection).filter_by(
+                                           id=2).one()
     manager = CollectionManager(session, collection)
     result = {}
     if afilter:
@@ -87,9 +76,8 @@ def filter_documents():
 
 @app.route('/_documents')
 def documents():
-    selected_collection_id = 1
     collection = session.query(Collection).filter(
-            Collection.id == selected_collection_id).one()
+            Collection.id == 3).one()
     result = []
     document_list = collection.documents
     for document in document_list:
@@ -116,8 +104,10 @@ def collections():
 
 @app.route('/_set_collection/<int:collection_id>')
 def set_collection(collection_id):
+    global selected_collection_id
     one_collection = session.query(Collection).filter_by(
                         id=collection_id).one()
+    selected_collection_id = one_collection.id
     return jsonify(one_collection.id)
 
 

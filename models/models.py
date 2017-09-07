@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 import enum
 
 
@@ -28,8 +28,11 @@ class Collection(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=True)
     description = Column(String(200))
-    parent = relationship('Collection', back_populates='sons')
     collectiontype = Column(Integer)
+    parent_id = Column(Integer, ForeignKey('collections.id'))
+    children = relationship('Collection',
+                            backref=backref('parent', remote_side=[id])
+                            )
 
     def __init__(self, name):
         self.name = name
@@ -39,10 +42,6 @@ class Collection(Base):
 
     def as_dict(self):
         return {'id': self.id, 'name': self.name}
-
-
-Collection.sons = relationship(
-    "Collection", order_by=Collection.id, back_populates="collection")
 
 
 class Document(Base):

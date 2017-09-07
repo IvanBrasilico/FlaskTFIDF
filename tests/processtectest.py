@@ -12,9 +12,9 @@ listaTEC = pt.montaTEC()
 listaNCM = pt.montaNCM(listaTEC)
 listaTECResumo = pt.montaTECResumo(listaNCM)
 
-#Teste
+# Teste
 print(listaNCM[0:4])
 print(listaTECResumo[0])
-list =  pt.tokenize_to_words(listaTECResumo[0])
+list = pt.tokenize_to_words(listaTECResumo[0])
 for word in list:
     print(word)
