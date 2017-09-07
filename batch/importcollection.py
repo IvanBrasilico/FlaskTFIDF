@@ -32,9 +32,9 @@ if not exists:
         descricao = linha[11:]
         document = manager.add_document(codigo, descricao)
     manager.commit()
+    # Retrieve documents, process then
     # manager.process_collection(pt.tokenize_to_words) TODO
     # manager.commit()
-    # Retrieve documents, process then
     documents = collection.documents
     for document in documents:
         manager.process(document, pt.tokenize_to_words)
@@ -45,7 +45,7 @@ collection2.parent_id = collection.id
 collection2.collectiontype = 2
 collection2.description = "Tabela NCM hierárquica"
 session.commit()
-if True: # not exists:
+if not exists:
     # Create Documents
     for linha in listaNCM:
         document = manager.add_document(linha[0], linha[1]+' - '+linha[2])

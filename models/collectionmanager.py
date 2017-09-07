@@ -31,7 +31,7 @@ from collections import Counter
 from sqlalchemy import func
 from sqlalchemy import text
 from sqlalchemy import or_
-from models.models import Collection, Document, Word, WordOccurrence
+from models.models import Collection, Document, Word, WordOccurrence, CollectionType
 
 
 class CollectionManager():
@@ -187,13 +187,34 @@ class CollectionManager():
         Returns a list of documents"""
         if not self.my_collection:
             return None
+        #  Try to choose a child best suited for this type of action
+        filter_collection = self.my_collection.get_child_type(
+                                                CollectionType.filtered
+                                                )
         document_list = self.session.query(Document).filter(
-            Document.collection_id == self.my_collection.id,
+            Document.collection_id == filter_collection.id,
             or_(Document.title.ilike(title_filter),
                 Document.contents.ilike(contents_filter))
             ).all()
         result = []
         for document in document_list:
-            result.append({"title": document.title,
+            result.append({"id": document.id, "title": document.title,
                            "contents": document.contents})
+        return result
+
+    def list_documents(self):
+        """Traditional SELECT id, title FROM documents (ALL)
+        Returns a list of documents, only id and title"""
+        if not self.my_collection:
+            return None
+        #  Try to choose a child best suited for this type of action
+        filter_collection = self.my_collection.get_child_type(
+                                                CollectionType.selection
+                                                )
+        print(filter_collection.description)
+        document_list = filter_collection.documents
+        result = []
+        for document in document_list:
+            result.append({"id": document.id,
+                           "title": document.title})
         return result

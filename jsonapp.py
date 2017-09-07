@@ -66,7 +66,7 @@ def correct():
 def filter_documents():
     afilter = request.args.get('afilter', 0, type=str)
     collection = session.query(Collection).filter_by(
-                                           id=2).one()
+                                           id=selected_collection_id).one()
     manager = CollectionManager(session, collection)
     result = {}
     if afilter:
@@ -76,13 +76,10 @@ def filter_documents():
 
 @app.route('/_documents')
 def documents():
-    collection = session.query(Collection).filter(
-            Collection.id == 3).one()
-    result = []
-    document_list = collection.documents
-    for document in document_list:
-        result.append({"id": document.id,
-                       "title": document.title})
+    collection = session.query(Collection).filter_by(
+                                           id=selected_collection_id).one()
+    manager = CollectionManager(session, collection)
+    result = manager.list_documents()
     return jsonify(result)
 
 
