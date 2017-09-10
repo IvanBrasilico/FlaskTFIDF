@@ -123,9 +123,9 @@ def wordcloud_range():
     maxv = int(request.args.get('maxv', '0'))
     print(minv)
     cloud_file, mincount, maxcount = word_cloud_maker(frequencies,
-                                      "static/wc.jpg", minv, maxv)
-    return render_template('wordcloud.html', image=cloud_file,
-                           minrange=mincount, maxrange=maxcount)
+                                      "/var/www/html/static/wc.jpg", minv, maxv)
+    return jsonify({'image': cloud_file,
+                    'minrange': mincount, 'maxrange': maxcount})
 
 
 @app.route('/_set_collection/<int:collection_id>')
