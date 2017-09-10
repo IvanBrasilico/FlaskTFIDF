@@ -149,6 +149,21 @@ class CollectionManager():
             docs_tf[row['docid']] = row['tf']
         return docs_tf
 
+    def word_frequency_dict(self, afilter=""):
+        """Retrieves from database the absolute frequency from all words
+        on all documents for selected collection"""
+        # TODO: Insert collection on query
+        conn = self.session.connection()
+        sql = text("select w.atoken, count(wo.id) as tf " +
+                   "from word_occurrences  wo " +
+                   "inner join words w on wo.word_id = w.id " +
+                   "group by wo.word_id;")
+        result = conn.execute(sql)
+        docs_tf = {}
+        for row in result:
+            docs_tf[row['atoken']] = row['tf']
+        return docs_tf
+
     def bm25(self, words, k=1.4, b=0.75):
         """Okapi BM25 implementation"""
         C = self.collection_lenght()
@@ -174,7 +189,7 @@ class CollectionManager():
                           'contents': doc.contents})
         return sorted(alist, key=lambda rank: rank['score'], reverse=True)
 
-    def tf_idf_cached(self, words, k=1.3, b=0.75):
+    def bm25_cached(self, words, k=1.4, b=0.75):
         """TODO: Create an optimized in memory Okapi BM25 implementation
         This version will retrieve all statistics from the DB
         once when first called (like a Singleton) and mantain it for

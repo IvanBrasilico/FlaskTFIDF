@@ -5,13 +5,15 @@ Created on Sun Sep  3 18:28:17 2017
 
 @author: IvanBrasilico
 """
-from flask import jsonify, request, Flask
+from flask import jsonify, request, Flask, render_template
+from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
+
 from models.models import Collection, Word, Document
 from models.models import engine
-import utils.spelling_corrector as spell
 from models.collectionmanager import CollectionManager
-from flask_cors import CORS
+import utils.spelling_corrector as spell
+from utils.wordcloudmaker import word_cloud_maker
 
 if __name__ == '__main__':
     app = Flask(__name__, static_url_path='/static')
@@ -97,6 +99,33 @@ def collections():
     for collection in collection_list:
         result.append({'id': collection.id, 'name': collection.name})
     return jsonify(result)
+
+
+@app.route('/_wordcloud')
+def wordcloud():
+    collection = session.query(Collection).filter_by(
+                                           id=selected_collection_id).one()
+    manager = CollectionManager(session, collection)
+    frequencies = manager.word_frequency_dict()
+    cloud_file, mincount, maxcount = word_cloud_maker(frequencies,
+                                                      "static/wc.jpg")
+    return render_template('wordcloud.html', image=cloud_file,
+                           minrange=mincount, maxrange=maxcount)
+
+
+@app.route('/_wordcloud_range')
+def wordcloud_range():
+    collection = session.query(Collection).filter_by(
+                                           id=selected_collection_id).one()
+    manager = CollectionManager(session, collection)
+    frequencies = manager.word_frequency_dict()
+    minv = int(request.args.get('minv', '1'))
+    maxv = int(request.args.get('maxv', '0'))
+    print(minv)
+    cloud_file, mincount, maxcount = word_cloud_maker(frequencies,
+                                      "static/wc.jpg", minv, maxv)
+    return render_template('wordcloud.html', image=cloud_file,
+                           minrange=mincount, maxrange=maxcount)
 
 
 @app.route('/_set_collection/<int:collection_id>')
