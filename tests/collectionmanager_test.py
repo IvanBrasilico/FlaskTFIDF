@@ -23,11 +23,3 @@ print(manager.tf('arruelas'))
 finaldict = manager.bm25('arruelas')
 print(finaldict)
 print(len(finaldict))
-
-print("Term Frequency (times that appears per document for three words" +
-      "'arruelas obras plastico')")
-finaldict = manager.bm25('arruelas obras plastico')
-print(finaldict)
-print(len(finaldict))
-
-print(manager.filter_documents("01%"))

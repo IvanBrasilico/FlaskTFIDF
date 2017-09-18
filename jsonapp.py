@@ -12,8 +12,8 @@ from sqlalchemy.orm import sessionmaker
 from models.models import Collection, Word, Document
 from models.models import engine
 from models.collectionmanager import CollectionManager
-import utils.spelling_corrector as spell
-from utils.wordcloudmaker import word_cloud_maker
+import util.spelling_corrector as spell
+from util.wordcloudmaker import word_cloud_maker
 
 if __name__ == '__main__':
     app = Flask(__name__, static_url_path='/static')
@@ -123,7 +123,7 @@ def wordcloud_range():
     maxv = int(request.args.get('maxv', '0'))
     print(minv)
     cloud_file, mincount, maxcount = word_cloud_maker(frequencies,
-                                      "/var/www/html/static/wc.jpg", minv, maxv)
+                                     "/var/www/html/static/wc.jpg", minv, maxv)
     return jsonify({'image': cloud_file,
                     'minrange': mincount, 'maxrange': maxcount})
 

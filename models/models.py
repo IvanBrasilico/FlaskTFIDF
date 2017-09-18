@@ -10,6 +10,7 @@ from sqlalchemy import Column, Integer, String
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
 import enum
+import os
 
 
 class CollectionType(enum.IntEnum):
@@ -19,7 +20,9 @@ class CollectionType(enum.IntEnum):
     raw = 4
 
 
-engine = create_engine('sqlite:////home/ivan/flask/flaskTEC/tecrank/test.db')
+path = os.path.dirname(os.path.abspath(__file__))
+
+engine = create_engine('sqlite:////'+path+'/../test.db')
 Base = declarative_base()
 
 

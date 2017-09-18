@@ -6,7 +6,7 @@ Created on Tue Aug 29 20:54:36 2017
 """
 from collections import Counter
 from sqlalchemy.orm import sessionmaker
-from wordcloud import WordCloud
+from util.wordcloud import WordCloud
 from models.models import engine, Collection
 from models.collectionmanager import CollectionManager
 
