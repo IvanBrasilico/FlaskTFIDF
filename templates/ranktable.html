@@ -1,0 +1,28 @@
+{% block body %}
+
+<h1>Simple Table Example</h1>
+<p>
+<form>
+  <input type="text" size="50" name="words" id="words" value="{{words}}" />
+  <input type="submit" />
+  </form>
+<table id="records_table" border='1'>
+<thead>
+    <tr>
+        <th>Score</th>
+        <th>Subitem</th>
+        <th>Descrição completa</th>
+    </tr>
+</thead>
+<tbody>
+{% for line in result %}
+<tr>
+<td>{{line.score}}</td>
+<td>{{line.title}}</td>
+<td>{{line.contents}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{% endblock %}

@@ -14,12 +14,15 @@ from models.models import engine
 from models.collectionmanager import CollectionManager
 import util.spelling_corrector as spell
 from util.wordcloudmaker import word_cloud_maker
+from blueprints.lacre.lacre import lacre
 
 if __name__ == '__main__':
     app = Flask(__name__, static_url_path='/static')
     CORS(app)
 else:
     from webapp import app
+
+app.register_blueprint(lacre)
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -47,7 +50,7 @@ def rank():
 
 @app.route('/_correct')
 def correct():
-    """Get words, return ranked results"""
+    """Get word, return sugestion from vocabulary"""
     words = request.args.get('words', 0, type=str)
     all_options = []
     if words and isinstance(words, str):

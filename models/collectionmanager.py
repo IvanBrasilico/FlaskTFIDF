@@ -171,12 +171,14 @@ class CollectionManager():
         score = Counter()
         docs = {}
         words = words.split(" ")
+        print(words)
         for word in words:
-            word = word.strip()
-            docs = self.tf(word)
-            ndocs = len(docs)
+            word = word.strip(' ')
+            word = word.lower()
+            docs_tf = self.tf(word)
+            ndocs = len(docs_tf)
             idf = math.log((C - ndocs + 0.5) / (ndocs + 0.5))
-            for docid, tf in docs.items():
+            for docid, tf in docs_tf.items():
                 adocument = self.session.query(Document).filter_by(id=docid).one()
                 D = adocument.length
                 rank = idf * ((tf * (k+1)) / (tf + k + ((1 - b) + (b * D/avgdl))))
