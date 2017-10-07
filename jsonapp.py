@@ -15,7 +15,7 @@ from models.collectionmanager import CollectionManager
 import util.spelling_corrector as spell
 from util.wordcloudmaker import word_cloud_maker
 from blueprints.lacre.lacre import lacre
-
+from blueprints.lacre.lacre import UPLOAD_FOLDER
 if __name__ == '__main__':
     app = Flask(__name__, static_url_path='/static')
     CORS(app)
@@ -23,6 +23,7 @@ else:
     from webapp import app
 
 app.register_blueprint(lacre)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 Session = sessionmaker(bind=engine)
 session = Session()
