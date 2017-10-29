@@ -21,6 +21,13 @@ memory_log = []
 memory_report = {}
 
 
+@lacre.route('/_lacre/test')
+def test():
+    """ Simple Mock test. App is alive or not? """
+    return jsonify([{"container": "HJCU000000", "lacre": "MGK00001"},
+                    {"container": "MSKU1234567", "contents": "MSK12345"}])
+
+
 def read_conteiners_csv():
     """Abre a lista a ser trabalhada. Lista deve ser gerada a partir de
     uma extracão do Carga"""
@@ -112,6 +119,7 @@ def is_safe_path(basedir, path, follow_symlinks=True):
 def delete_file(filename):
     """ Recebe nome do arquivo, tenta apagar
     e retorna para página que chamou"""
+    filename = secure_filename(filename)
     filepath = os.path.join(path, filename)
     if is_safe_path(path, filepath):
         os.remove(filepath)
@@ -127,13 +135,6 @@ def select_file(filename):
         global containers_file
         containers_file = filename
     return redirect("/lacre.html")
-
-
-@lacre.route('/_lacre/test')
-def test():
-    """ Simple Mock test. App is alive or not? """
-    return jsonify([{"container": "HJCU000000", "lacre": "MGK00001"},
-                    {"container": "MSKU1234567", "contents": "MSK12345"}])
 
 
 @lacre.route('/_lacre/container_autocomplete/<parcial_container_id>')
