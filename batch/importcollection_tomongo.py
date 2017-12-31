@@ -6,6 +6,7 @@ Created on Sat Aug 26 09:52:25 2017
 
 Test module processtec
 """
+import pprint
 import time
 from pymongo import MongoClient
 from pymongo import DeleteMany
@@ -18,9 +19,10 @@ def my_timer(function, description, params=[]):
     """Simple profiling"""
     secs = time.time()
     print(description)
-    function(*params)
+    result = function(*params)
     secse = time.time()
     print('Tempo em segundos: ', secse - secs)
+    return result
 
 
 def mongo_init():
@@ -36,11 +38,10 @@ my_timer(mongo_init, 'Mongo initialization')
 exists = True
 # collection, exists = manager.add_collection("TEC")
 if not exists:
-    print('Processando arquivo TEC')
-    secs = time.time()
-    listaTEC = pt.montaTEC()
-    listaNCM = pt.montaNCM(listaTEC)
-    listaTECResumo = pt.montaTECResumo(listaNCM)
+    listaTEC = my_timer(pt.montaTEC(), 'Montando lista TEC')
+    listaNCM = my_timer(pt.montaNCM(listaTEC), 'Montando lista NCM')
+    listaTECResumo = my_timer(pt.montaTECResumo(listaNCM),
+                              'Montando lista TEC Resumo')
     # Create Documents
     for linha in listaTECResumo:
         codigo = linha[:10]
@@ -49,7 +50,7 @@ if not exists:
         collection.insert_one({'_id': codigo,
                                'descricao': descricao,
                                'words': words})
-        #document = manager.add_document(codigo, descricao)
+        # document = manager.add_document(codigo, descricao)
     # manager.commit()
     # Retrieve documents, process then
     # manager.process_collection(pt.tokenize_to_words) TODO
@@ -79,9 +80,25 @@ def word_count(words):
 # Retrieve documents of a word
 def word_find(words):
     print([document['_id'] for document in
-           collection.find({'words': {'$in': ['carbonato', 'vestuario']}})])
+           collection.find({'words': {'$in': words}})])
 
 # Retrieve word occurrence per document (Term Frequency - TF - docs_tf)
+
+
+def tf(words):
+    agregates = []
+    for word in words:
+        agregate = list(collection.aggregate([
+            {'$unwind': '$words'},
+            { '$match': {'words': word}},
+            {'$group':
+            {'_id': '$_id',
+            'count': {'$sum': 1}}
+            }
+        ]))
+        # pprint.pprint(agregate)
+        agregates.append(agregate)
+    return agregates
 
 
 def collection_lenght():
@@ -91,23 +108,28 @@ def collection_lenght():
 
 def avg_dl():
     # Avg Document length (avgdl)
-    import pprint
     agregate = list(collection.aggregate([
         {'$unwind': '$words'},
-        {'$group': {'_id': 'result', 'count': {'$sum': 1}}}
+        {'$group':
+         {'_id': 'result',
+          'count': {'$sum': 1}}
+         }
     ]))
-    pprint.pprint(agregate)
+
+    # pprint.pprint(agregate)
     print('Total de palavras', agregate[0]['count'])
     print('Média', agregate[0]['count'] / collection.count())
 
 
+words = ['carbonato', 'vestuario']
 my_timer(vocab, 'Listando vocabulário')
 my_timer(word_count, 'Vezes que carbonato ou vestuario ocorrem:',
-         [['carbonato', 'vestuario']])
+         [words])
 my_timer(word_find, 'Carbonato ou vestuario ocorrem em:',
-         [['carbonato', 'vestuario']])
+         [words])
 my_timer(collection_lenght, 'Tamanho da coleção')
-my_timer(avg_dl, 'Tamanho dos documentos')
+my_timer(avg_dl, 'Tamanho médio dos documentos')
+my_timer(tf, 'Contagem de palavras por documento', [words])
 
 secse = time.time()
 print('Tempo total do script: ', secse - initial_sec)
