@@ -86,7 +86,7 @@ class CollectionManager():
 
     def process(self, pdocument, ptokenizer):
         """ Receives a word token generator and process the document with
-        the received function. Adds receiver words to collection for
+        the received function. Adds received words to collection for
         statistical analysis
         """
         wordmodellist = []
