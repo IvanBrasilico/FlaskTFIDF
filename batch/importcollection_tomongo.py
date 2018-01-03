@@ -168,9 +168,17 @@ Após, foi feito um índice para as palavras do array words:
  (ver log de testes em mongo_testes.txt)
 Aparentemente, o índice não fez grande diferença neste caso.
 Como a previsão é de pouca atualização e muita consulta, isto mostrou a
-necessidade de um 'cache' para estes dados, uma tabela para guardar o total
-de palavras, e outra para guardar uma chave palavra, lista de documentos
-com qtde de ocorrências
+necessidade de um 'cache' para estes dados, uma tabela para guardar uma chave
+palavra, lista de documentos com qtde de ocorrências (collection_word)
+Com o uso de collection_word, o tempo de busca por palavra caiu de
+1s para 0.16 aproximadamente, para 4 palavras.
+Outro ganho é que o tempo de busca anterior era linear à quantidade de palavras.
+Agora, com 6 palavras em vez de 4, novos testes subiram apenas de 0.16s para
+0.17s, portando a quantidade de palavras impacta muito pouco. Com poucas
+otimizações adicionais, certamente será possivelmente responder a consulta a uma
+lista de palavras calculando Okapi BM25 em menos de 0.2s em média.
+Além disso, usando a função agregate do mongo para contar o número de palavras
+do vocabulário, o tempo cai para menos da metade.
 """
 print('##################################################')
 print('# Testes com uso de tabela RESUMO!!!')
@@ -182,9 +190,10 @@ for line in all_info.split("\n"):
         print(re.sub(".*model name.*:", "", line, 1))
 print(os.uname())
 print(time.strftime('%Y-%m-%d %H:%M'))
-words = ['carbonato', 'vestuario', 'paracetamol', 'outros']
+words = ['carbonato', 'vestuario', 'paracetamol', 'outros', 'plasticos', 'obras']
 print('Words', words)
-vocabulary = my_timer(vocab, '1 - Listando vocabulário e calculando tamanho')
+# vocabulary = my_timer(vocab, '1 - Listando vocabulário e' +
+#  ' calculando tamanho (contando cada item da lista)')
 my_timer(collection_lenght, '2 - Calculando tamanho da coleção')
 my_timer(avg_dl, '3 - Calcular tamanho médio dos documentos')
 # my_timer(tf, '4 - Contagem de palavras por documento', [words])
