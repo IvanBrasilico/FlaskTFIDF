@@ -1,0 +1,216 @@
+Mongo initialization
+Tempo em segundos:  0.0037391185760498047
+##################################################
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 10:25
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['ferrosos', 'hidrobromofluorcarbonetos', '3 quinuclidinila', 'antissolares', 'camisetas', 'puncionar', '90', 'diazinon', 'poliester', 'palas']
+Total de palavras:  10045
+Tempo em segundos:  0.2942209243774414
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.0006570816040039062
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.10507345199584961
+4 - Contagem de palavras por documento
+Tempo em segundos:  1.165320873260498
+Tempo total do script:  1.5757296085357666
+##################################################
+Mongo initialization
+Tempo em segundos:  0.01687312126159668
+##################################################
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 10:25
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['virola', 'glaucum', 'sinterizada', 'frontal', 'pesada', 'limpa', '3 7 dimetiloctan 3 ol', 'propilenoglicois', '23 l', 'benzilideno']
+Total de palavras:  10045
+Tempo em segundos:  0.25899267196655273
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.0006754398345947266
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.10816431045532227
+4 - Contagem de palavras por documento
+Tempo em segundos:  1.1037876605987549
+Tempo total do script:  1.5893409252166748
+##################################################
+Mongo initialization
+Tempo em segundos:  0.004849433898925781
+##################################################
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 10:25
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['tartaruga', 'ferruginosos', 'escoramentos', 'impedida', 'dioscorea', 'aerogel', 'difenila', 'sanefas', 'danakilia', 'cargas']
+Total de palavras:  10045
+Tempo em segundos:  0.2920417785644531
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.0006129741668701172
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.11413002014160156
+4 - Contagem de palavras por documento
+Tempo em segundos:  0.9733750820159912
+Tempo total do script:  1.394110918045044
+##################################################
+Mongo initialization
+Tempo em segundos:  0.0019562244415283203
+##################################################
+# Testes com uso de índice no array words
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 10:43
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['casulos', 'butadieno', 'retinol', 'publicitarios', 'tremelas', 'acustico', 'registrar', 'contendo', 'mogno', '0303 99']
+Total de palavras:  10045
+Tempo em segundos:  0.2066962718963623
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.000598907470703125
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.10898089408874512
+4 - Contagem de palavras por documento
+Tempo em segundos:  0.975867509841919
+Tempo total do script:  1.3043813705444336
+##################################################
+Mongo initialization
+Tempo em segundos:  0.0025174617767333984
+##################################################
+# Testes com uso de índice no array words
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 10:43
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['locomotivas', 'c16', 'albendazol', '1 4 dicianobutano', 'corda', 'captar', 'macrolidios', 'multifuso', 'multiplos', 'ferrocianeto']
+Total de palavras:  10045
+Tempo em segundos:  0.22730660438537598
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.0007219314575195312
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.1005713939666748
+4 - Contagem de palavras por documento
+Tempo em segundos:  0.9901206493377686
+Tempo total do script:  1.3289694786071777
+##################################################
+Mongo initialization
+Tempo em segundos:  0.0016026496887207031
+##################################################
+# Testes com uso de índice no array words
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 10:43
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['longa', 'pesando', '46', 'toxinas', 'sortidos', 'cerimonias', 'dicromato', '200 kg m3', 'estireno butadieno', 'tenra']
+Total de palavras:  10045
+Tempo em segundos:  0.21403264999389648
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.0007729530334472656
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.10741996765136719
+4 - Contagem de palavras por documento
+Tempo em segundos:  0.9882900714874268
+Tempo total do script:  1.3192851543426514
+##################################################
+Mongo initialization
+Tempo em segundos:  0.002195596694946289
+##################################################
+# Testes com uso de tabela RESUMO!!!
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 11:22
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['vulcanizada', 'colocar', 'fibrosas', 'torrada', 'rutosidio', 'rolantes', 'eletrocardiografos', '54 05', 'preparo', 'hostias']
+Total de palavras:  10045
+Tempo em segundos:  0.21424508094787598
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.0007948875427246094
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.10384941101074219
+4 - Contagem de palavras por documento
+Tempo em segundos:  0.1646726131439209
+{'6111.30.00': 1, '6114.30.00': 1, '6211.42.00': 2, '5809.00.00': 1, '4015.19.00': 1, '8308.90.90': 2, '6812.99.90': 1, '6211.49.00': 2, '4203.30.00': 1, '8424.30.20': 1, '4203.10.00': 2, '6812.99.20': 1, '6114.20.00': 1, '6209.20.00': 1, '6307.90.10': 1, '6117.80.90': 2, '4303.10.00': 2, '6307.90.20': 1, '6117.90.00': 2, '6117.80.10': 2, '6211.32.00': 2, '6307.20.00': 1, '6209.30.00': 1, '6209.90.90': 1, '6307.10.00': 1, '6812.92.00': 1, '6211.12.00': 1, '4203.40.00': 2, '4203.21.00': 1, '6211.20.00': 1, '4818.50.00': 1, '6812.80.00': 1, '6111.90.10': 1, '6111.90.90': 1, '6211.39.10': 2, '4203.29.00': 1, '6812.99.10': 1, '6211.43.00': 2, '6309.00.10': 1, '4303.90.00': 1, '8308.10.00': 2, '4015.11.00': 1, '6211.33.00': 2, '6211.39.90': 2, '6113.00.00': 1, '6210.40.00': 2, '6812.99.30': 1, '6114.90.10': 1, '8308.90.10': 2, '6210.50.00': 2, '8308.90.20': 2, '4015.90.00': 1, '6307.90.90': 1, '6217.90.00': 2, '6210.10.00': 1, '6111.20.00': 1, '6209.90.10': 1, '6210.30.00': 2, '6114.90.90': 1, '8308.20.00': 2, '6812.91.00': 3, '6117.10.00': 2, '6210.20.00': 2, '6211.11.00': 1, '6812.93.00': 1, '6217.10.00': 2, '3926.20.00': 1, '4421.10.00': 1}
+Tempo total do script:  0.49224162101745605
+##################################################
+Mongo initialization
+Tempo em segundos:  0.0033216476440429688
+##################################################
+# Testes com uso de tabela RESUMO!!!
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 11:22
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['leitores', '12 000 kn', 'fundos', 'potassico', 'cardiidae', 'esmaltados', '297 5 kw', 'fresca', 'operacoes', 'intra uretral']
+Total de palavras:  10045
+Tempo em segundos:  0.20863652229309082
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.0006175041198730469
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.09791159629821777
+4 - Contagem de palavras por documento
+Tempo em segundos:  0.16178393363952637
+{'4015.11.00': 1, '6210.20.00': 2, '6812.80.00': 1, '3926.20.00': 1, '4303.10.00': 2, '6812.91.00': 3, '8308.90.10': 2, '6211.49.00': 2, '6211.39.90': 2, '6211.12.00': 1, '6211.20.00': 1, '6117.80.90': 2, '6209.90.10': 1, '6111.90.10': 1, '6812.93.00': 1, '4203.40.00': 2, '8308.90.20': 2, '6111.20.00': 1, '4015.19.00': 1, '6812.99.30': 1, '6812.92.00': 1, '6111.90.90': 1, '6217.90.00': 2, '6114.90.90': 1, '6211.33.00': 2, '6307.90.90': 1, '6307.90.20': 1, '6117.90.00': 2, '6210.10.00': 1, '6211.11.00': 1, '6812.99.10': 1, '4421.10.00': 1, '6307.90.10': 1, '6307.10.00': 1, '4203.10.00': 2, '6117.80.10': 2, '8424.30.20': 1, '8308.10.00': 2, '6307.20.00': 1, '4203.30.00': 1, '6209.20.00': 1, '6111.30.00': 1, '6210.50.00': 2, '6812.99.20': 1, '8308.90.90': 2, '6309.00.10': 1, '5809.00.00': 1, '6211.42.00': 2, '6210.30.00': 2, '6113.00.00': 1, '6210.40.00': 2, '6217.10.00': 2, '4203.29.00': 1, '6114.90.10': 1, '6209.90.90': 1, '4015.90.00': 1, '4203.21.00': 1, '6211.32.00': 2, '6114.30.00': 1, '6211.43.00': 2, '4818.50.00': 1, '6211.39.10': 2, '6209.30.00': 1, '4303.90.00': 1, '6114.20.00': 1, '8308.20.00': 2, '6812.99.90': 1, '6117.10.00': 2}
+Tempo total do script:  0.47882795333862305
+##################################################
+Mongo initialization
+Tempo em segundos:  0.001638650894165039
+##################################################
+# Testes com uso de tabela RESUMO!!!
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+ Intel(R) Celeron(R) CPU 1037U @ 1.80GHz
+posix.uname_result(sysname='Linux', nodename='ivan-PRESARIOCQ18', release='4.10.0-42-generic', version='#46~16.04.1-Ubuntu SMP Mon Dec 4 15:57:59 UTC 2017', machine='x86_64')
+2018-01-03 11:22
+Words ['carbonato', 'vestuario', 'paracetamol', 'outros']
+1 - Listando vocabulário e calculando tamanho
+Vocab  ['41 01', 'cardamomos', 'comerciais', 'jato', 'perfuracoes', 'piperazina', 'taninos', 'bonito listrado', '8462 21', 'descabecar']
+Total de palavras:  10045
+Tempo em segundos:  0.21498727798461914
+2 - Calculando tamanho da coleção
+10147
+Tempo em segundos:  0.0008015632629394531
+3 - Calcular tamanho médio dos documentos
+Total de palavras 228343
+Média 22.503498571006208
+Tempo em segundos:  0.10424971580505371
+4 - Contagem de palavras por documento
+Tempo em segundos:  0.1650712490081787
+{'6307.90.90': 1, '6210.30.00': 2, '6211.43.00': 2, '6210.10.00': 1, '6210.20.00': 2, '8308.90.10': 2, '6307.10.00': 1, '6114.30.00': 1, '3926.20.00': 1, '4303.90.00': 1, '6211.11.00': 1, '4203.29.00': 1, '6113.00.00': 1, '6217.10.00': 2, '4818.50.00': 1, '6307.90.10': 1, '6211.39.10': 2, '4015.90.00': 1, '4203.21.00': 1, '6307.90.20': 1, '6210.50.00': 2, '6211.32.00': 2, '8308.20.00': 2, '6209.90.90': 1, '6114.20.00': 1, '8424.30.20': 1, '6111.30.00': 1, '6812.99.10': 1, '6111.90.10': 1, '6209.30.00': 1, '6211.33.00': 2, '6111.20.00': 1, '6117.80.90': 2, '6211.49.00': 2, '6307.20.00': 1, '4015.11.00': 1, '4015.19.00': 1, '4303.10.00': 2, '5809.00.00': 1, '6812.91.00': 3, '6209.20.00': 1, '8308.90.90': 2, '6210.40.00': 2, '6812.93.00': 1, '6812.80.00': 1, '6812.99.90': 1, '6812.92.00': 1, '6211.12.00': 1, '6812.99.20': 1, '6309.00.10': 1, '6211.42.00': 2, '4203.40.00': 2, '6111.90.90': 1, '6209.90.10': 1, '6117.10.00': 2, '6117.80.10': 2, '6114.90.10': 1, '6114.90.90': 1, '4203.10.00': 2, '8308.10.00': 2, '6117.90.00': 2, '6812.99.30': 1, '6217.90.00': 2, '6211.39.90': 2, '8308.90.20': 2, '6211.20.00': 1, '4421.10.00': 1, '4203.30.00': 1}
+Tempo total do script:  0.49274277687072754
+##################################################
