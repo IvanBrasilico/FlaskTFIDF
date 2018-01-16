@@ -18,17 +18,66 @@
     :copyright: (c) 2017 by Ivan Brasilico.
     :license: GPL, see LICENSE for more details.
 """
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import Navbar, View
 from flask_cors import CORS
+from sqlalchemy.orm import sessionmaker
+from models.models import engine
+from models.models import Collection
+from models.collectionmanager import CollectionManager
 
 
 app = Flask(__name__, static_url_path='/static')
 CORS(app)
 Bootstrap(app)
 nav = Nav()
+
+
+Session = sessionmaker(bind=engine)
+session = Session()
+
+
+@app.route('/ranktable.html')
+def ranktable():
+    """Get words, return ranked results"""
+    words = request.args.get('words', '', type=str)
+    result = []
+    if words and isinstance(words, str):
+        collection = session.query(Collection).filter_by(
+                                               id=1).one()
+        manager = CollectionManager(session, collection)
+        result = manager.bm25(words)
+    return render_template('ranktable.html', result=result, words=words)
+
+
+@app.route('/ranktablejson.html')
+def ranktablejson():
+    return render_template('ranktablejson.html')
+
+
+@app.route('/_mockrank')
+def mockrank():
+    return jsonify({'score': '10',
+                    'title': 'Mock 1',
+                    'contents': 'Testing is good! Mock isolates things'},
+                   {'score': '8,5',
+                    'title': 'Mock 2',
+                    'contents': 'Mocks can be your friends'})
+
+
+@app.route('/_rankjson')
+def rankjson():
+    """Get words, return ranked results"""
+    words = request.args.get('words', '', type=str)
+    result = []
+    if words and isinstance(words, str):
+        collection = session.query(Collection).filter_by(
+                                               id=1).one()
+        manager = CollectionManager(session, collection)
+        result = manager.bm25(words)
+    return jsonify(result)
 
 
 @app.route('/')

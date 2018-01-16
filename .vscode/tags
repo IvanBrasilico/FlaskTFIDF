@@ -1,0 +1,219 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ALLOWED_EXTENSIONS	../blueprints/lacre/lacre.py	/^ALLOWED_EXTENSIONS = set(['txt', 'csv'])$/;"	kind:variable	line:18
+Base	../models/models.py	/^Base = declarative_base()$/;"	kind:variable	line:26
+Collection	../models/models.py	/^class Collection(Base):$/;"	kind:class	line:29
+CollectionManager	../models/collectionmanager.py	/^class CollectionManager():$/;"	kind:class	line:37
+CollectionType	../models/models.py	/^class CollectionType(enum.IntEnum):$/;"	kind:class	line:16
+Document	../models/models.py	/^class Document(Base):$/;"	kind:class	line:62
+Session	../batch/importcollection.py	/^Session = sessionmaker(bind=engine)$/;"	kind:variable	line:21
+Session	../jsonapp.py	/^Session = sessionmaker(bind=engine)$/;"	kind:variable	line:28
+Session	../tests/collectionmanager_test.py	/^Session = sessionmaker(bind=engine)$/;"	kind:variable	line:11
+Session	../tests/models_test.py	/^Session = sessionmaker(bind=engine)$/;"	kind:variable	line:21
+Session	../tests/spell_test.py	/^Session = sessionmaker(bind=engine)$/;"	kind:variable	line:12
+Session	../tests/wordcloud_test.py	/^Session = sessionmaker(bind=engine)$/;"	kind:variable	line:13
+Session	../webapp.py	/^Session = sessionmaker(bind=engine)$/;"	kind:variable	line:38
+UPLOAD_FOLDER	../blueprints/lacre/lacre.py	/^UPLOAD_FOLDER = path$/;"	kind:variable	line:17
+Word	../models/models.py	/^class Word(Base):$/;"	kind:class	line:89
+WordOccurrence	../models/models.py	/^class WordOccurrence(Base):$/;"	kind:class	line:106
+__init__	../models/collectionmanager.py	/^    def __init__(self, psession, pcollection=None):$/;"	kind:member	line:40
+__init__	../models/models.py	/^    def __init__(self, atoken):$/;"	kind:member	line:98
+__init__	../models/models.py	/^    def __init__(self, name):$/;"	kind:member	line:52
+__init__	../models/models.py	/^    def __init__(self, pcollection, ptitle, pcontent):$/;"	kind:member	line:73
+__init__	../models/models.py	/^    def __init__(self, word_id, document_id, position):$/;"	kind:member	line:113
+__repr__	../models/models.py	/^    def __repr__(self):$/;"	kind:member	line:102
+__repr__	../models/models.py	/^    def __repr__(self):$/;"	kind:member	line:118
+__repr__	../models/models.py	/^    def __repr__(self):$/;"	kind:member	line:55
+__repr__	../models/models.py	/^    def __repr__(self):$/;"	kind:member	line:78
+__tablename__	../models/models.py	/^    __tablename__ = 'collections'$/;"	kind:variable	line:32
+__tablename__	../models/models.py	/^    __tablename__ = 'documents'$/;"	kind:variable	line:65
+__tablename__	../models/models.py	/^    __tablename__ = 'word_occurrences'$/;"	kind:variable	line:107
+__tablename__	../models/models.py	/^    __tablename__ = 'words'$/;"	kind:variable	line:93
+_upload_file	../blueprints/lacre/lacre.py	/^def _upload_file():$/;"	kind:function	line:81
+add_collection	../models/collectionmanager.py	/^    def add_collection(self, collection_name):$/;"	kind:member	line:44
+add_document	../models/collectionmanager.py	/^    def add_document(self, ptitle, pcontent):$/;"	kind:member	line:56
+add_document_and_proccess	../models/collectionmanager.py	/^    def add_document_and_proccess(self, ptitle, pcontent, ptokenizer):$/;"	kind:member	line:64
+all_options	../tests/spell_test.py	/^    all_options = set(set(correct)  | set(parcial) | set(parcialcorrect))$/;"	kind:variable	line:29
+allowed_file	../blueprints/lacre/lacre.py	/^def allowed_file(filename):$/;"	kind:function	line:42
+allviews.py	../allviews.py	1;"	kind:file	line:1
+app	../jsonapp.py	/^    app = Flask(__name__, static_url_path='\/static')$/;"	kind:variable	line:20
+app	../webapp.py	/^app = Flask(__name__, static_url_path='\/static')$/;"	kind:variable	line:32
+as_dict	../models/models.py	/^    def as_dict(self):$/;"	kind:member	line:58
+as_dict	../models/models.py	/^    def as_dict(self):$/;"	kind:member	line:81
+atoken	../models/models.py	/^    atoken = Column(String(40), unique=True)$/;"	kind:variable	line:95
+avg_dl	../models/collectionmanager.py	/^    def avg_dl(self):$/;"	kind:member	line:120
+backref	../models/models.py	/^                            backref=backref('parent', remote_side=[id])$/;"	kind:variable	line:39
+bm25	../models/collectionmanager.py	/^    def bm25(self, words, k=1.4, b=0.75):$/;"	kind:member	line:167
+bm25_cached	../models/collectionmanager.py	/^    def bm25_cached(self, words, k=1.4, b=0.75):$/;"	kind:member	line:194
+busca	../tests/spell_test.py	/^    busca = input("Digite a palavra a corrigir:")$/;"	kind:variable	line:18
+busca	../tests/spell_test.py	/^busca = "inicia"$/;"	kind:variable	line:15
+case_of	../util/spelling_corrector.py	/^    def case_of(text):$/;"	kind:function	line:83
+children	../models/models.py	/^    children = relationship('Collection',$/;"	kind:variable	line:38
+codigo	../batch/importcollection.py	/^        codigo = linha[:10]$/;"	kind:variable	line:31
+collection	../models/models.py	/^    collection = relationship("Collection", back_populates="documents")$/;"	kind:variable	line:68
+collection	../tests/models_test.py	/^collection = Collection('TESTE')$/;"	kind:variable	line:24
+collection	../webapp.py	/^def collection():$/;"	kind:function	line:99
+collection_id	../models/models.py	/^    collection_id = Column(Integer, ForeignKey('collections.id'))$/;"	kind:variable	line:67
+collection_lenght	../models/collectionmanager.py	/^    def collection_lenght(self):$/;"	kind:member	line:112
+collectionmanager.py	../models/collectionmanager.py	1;"	kind:file	line:1
+collectionmanager_test.py	../tests/collectionmanager_test.py	1;"	kind:file	line:1
+collections	../jsonapp.py	/^def collections():$/;"	kind:function	line:100
+collectiontype	../models/models.py	/^    collectiontype = Column(Integer)$/;"	kind:variable	line:36
+commit	../models/collectionmanager.py	/^    def commit(self):$/;"	kind:member	line:82
+consulta_lacre	../blueprints/lacre/lacre.py	/^def consulta_lacre(lacre_id):$/;"	kind:function	line:173
+container	../blueprints/lacre/lacre.py	/^def container(container_id):$/;"	kind:function	line:152
+containers_file	../blueprints/lacre/lacre.py	/^containers_file = 'conteiners.csv'$/;"	kind:variable	line:16
+contents	../models/models.py	/^    contents = Column(String(1000))$/;"	kind:variable	line:70
+correct	../jsonapp.py	/^def correct():$/;"	kind:function	line:53
+correct	../tests/spell_test.py	/^    correct = spell.correct(busca, vocab)$/;"	kind:variable	line:21
+correct	../util/spelling_corrector.py	/^def correct(word, vocab):$/;"	kind:function	line:61
+correct_match	../util/spelling_corrector.py	/^def correct_match(match, vocab):$/;"	kind:function	line:76
+correct_text_generic	../util/spelling_corrector.py	/^def correct_text_generic(text):$/;"	kind:function	line:95
+counter	../tests/wordcloud_test.py	/^counter = Counter(frequencies)$/;"	kind:variable	line:30
+delete_file	../blueprints/lacre/lacre.py	/^def delete_file(filename):$/;"	kind:function	line:119
+descricao	../batch/importcollection.py	/^        descricao = linha[11:]$/;"	kind:variable	line:32
+description	../models/models.py	/^    description = Column(String(200))$/;"	kind:variable	line:35
+document	../batch/importcollection.py	/^        document = manager.add_document(codigo, descricao)$/;"	kind:variable	line:33
+document	../batch/importcollection.py	/^        document = manager.add_document(linha[0], linha[1]+' - '+linha[2])$/;"	kind:variable	line:51
+document	../batch/importcollection.py	/^        document = manager.add_document(linha[0], linha[1]+' <br> '+linha[2])$/;"	kind:variable	line:63
+document1	../tests/models_test.py	/^document1 = Document(collection, 'DOC1', 'Test of document number 1')$/;"	kind:variable	line:28
+document2	../tests/models_test.py	/^document2 = Document(collection, 'DOC2', 'Test of document number 2')$/;"	kind:variable	line:29
+document_content	../jsonapp.py	/^def document_content(document_id):$/;"	kind:function	line:93
+document_id	../models/models.py	/^    document_id = Column(Integer, ForeignKey('documents.id'))$/;"	kind:variable	line:110
+documents	../batch/importcollection.py	/^    documents = collection.documents$/;"	kind:variable	line:38
+documents	../jsonapp.py	/^def documents():$/;"	kind:function	line:84
+edits0	../util/spelling_corrector.py	/^def edits0(word):$/;"	kind:function	line:25
+edits1	../util/spelling_corrector.py	/^def edits1(word):$/;"	kind:function	line:32
+edits2	../util/spelling_corrector.py	/^def edits2(word):$/;"	kind:function	line:54
+engine	../models/models.py	/^engine = create_engine('sqlite:\/\/\/\/'+path+'\/..\/test.db')$/;"	kind:variable	line:25
+engine	../tests/models_test.py	/^engine = create_engine('sqlite:\/\/\/\/'+path+'\/testmodel.db')$/;"	kind:variable	line:16
+filter	../webapp.py	/^def filter():$/;"	kind:function	line:89
+filter_documents	../jsonapp.py	/^def filter_documents():$/;"	kind:function	line:72
+filter_documents	../models/collectionmanager.py	/^    def filter_documents(self, title_filter, contents_filter="%"):$/;"	kind:member	line:202
+filtered	../models/models.py	/^    filtered = 2$/;"	kind:variable	line:18
+finaldict	../tests/collectionmanager_test.py	/^finaldict = manager.bm25('arruelas')$/;"	kind:variable	line:23
+freezer	../frozen.py	/^freezer = Freezer(app)$/;"	kind:variable	line:15
+frequencies	../tests/wordcloud_test.py	/^frequencies = manager.word_frequency_dict()$/;"	kind:variable	line:22
+frozen.py	../frozen.py	1;"	kind:file	line:1
+get_child_type	../models/models.py	/^    def get_child_type(self, collectiontype):$/;"	kind:member	line:42
+height	../tests/wordcloud_test.py	/^                      height=500).generate_from_frequencies(frequencies)$/;"	kind:variable	line:24
+height	../tests/wordcloud_test.py	/^                      height=500).generate_from_frequencies(main_frequencies)$/;"	kind:variable	line:41
+id	../models/models.py	/^    id = Column(Integer, primary_key=True)$/;"	kind:variable	line:108
+id	../models/models.py	/^    id = Column(Integer, primary_key=True)$/;"	kind:variable	line:33
+id	../models/models.py	/^    id = Column(Integer, primary_key=True)$/;"	kind:variable	line:66
+id	../models/models.py	/^    id = Column(Integer, primary_key=True)$/;"	kind:variable	line:94
+image	../tests/wordcloud_test.py	/^image = wordcloud.to_image()$/;"	kind:variable	line:25
+image	../tests/wordcloud_test.py	/^image = wordcloud.to_image()$/;"	kind:variable	line:42
+importcollection.py	../batch/importcollection.py	1;"	kind:file	line:1
+index	../webapp.py	/^def index():$/;"	kind:function	line:84
+is_safe_path	../blueprints/lacre/lacre.py	/^def is_safe_path(basedir, path, follow_symlinks=True):$/;"	kind:function	line:110
+jsonapp.py	../jsonapp.py	1;"	kind:file	line:1
+known	../util/spelling_corrector.py	/^def known(words, vocab):$/;"	kind:function	line:17
+lacre	../blueprints/lacre/lacre.py	/^lacre = Blueprint('lacre', __name__)$/;"	kind:variable	line:14
+lacre.py	../blueprints/lacre/lacre.py	1;"	kind:file	line:1
+length	../models/models.py	/^    length = Column(Integer)$/;"	kind:variable	line:71
+length	../models/models.py	/^    length = Column(Integer)$/;"	kind:variable	line:96
+list	../tests/processtectest.py	/^list = pt.tokenize_to_words(listaTECResumo[0])$/;"	kind:variable	line:18
+list_documents	../models/collectionmanager.py	/^    def list_documents(self):$/;"	kind:member	line:222
+list_files	../blueprints/lacre/lacre.py	/^def list_files():$/;"	kind:function	line:102
+listaCapitulos	../batch/importcollection.py	/^listaCapitulos = pt.montaCapitulos(listaTEC)$/;"	kind:variable	line:16
+listaNCM	../batch/importcollection.py	/^listaNCM = pt.montaNCM(listaTEC)$/;"	kind:variable	line:14
+listaNCM	../tests/processtectest.py	/^listaNCM = pt.montaNCM(listaTEC)$/;"	kind:variable	line:12
+listaTEC	../batch/importcollection.py	/^listaTEC = pt.montaTEC()$/;"	kind:variable	line:13
+listaTEC	../tests/processtectest.py	/^listaTEC = pt.montaTEC()$/;"	kind:variable	line:11
+listaTECResumo	../batch/importcollection.py	/^listaTECResumo = pt.montaTECResumo(listaNCM)$/;"	kind:variable	line:15
+listaTECResumo	../tests/processtectest.py	/^listaTECResumo = pt.montaTECResumo(listaNCM)$/;"	kind:variable	line:13
+lista_container	../blueprints/lacre/lacre.py	/^def lista_container(parcial_container_id):$/;"	kind:function	line:141
+log	../blueprints/lacre/lacre.py	/^def log():$/;"	kind:function	line:195
+main_frequencies	../tests/wordcloud_test.py	/^main_frequencies = {k: v for$/;"	kind:variable	line:37
+manager	../batch/importcollection.py	/^manager = CollectionManager(session)$/;"	kind:variable	line:24
+manager	../tests/collectionmanager_test.py	/^manager = CollectionManager(session, teccollection)$/;"	kind:variable	line:17
+manager	../tests/wordcloud_test.py	/^manager = CollectionManager(session, teccollection)$/;"	kind:variable	line:18
+maxcount	../tests/wordcloud_test.py	/^maxcount = stats[0][1]$/;"	kind:variable	line:32
+memory_log	../blueprints/lacre/lacre.py	/^memory_log = []$/;"	kind:variable	line:20
+memory_report	../blueprints/lacre/lacre.py	/^memory_report = {}$/;"	kind:variable	line:21
+mincount	../tests/wordcloud_test.py	/^mincount = stats[-1][1]$/;"	kind:variable	line:33
+mockrank	../webapp.py	/^def mockrank():$/;"	kind:function	line:61
+models.py	../models/models.py	1;"	kind:file	line:1
+models_test.py	../tests/models_test.py	1;"	kind:file	line:1
+montaCapitulos	../batch/processtec.py	/^def montaCapitulos(plistaTEC):$/;"	kind:function	line:32
+montaNCM	../batch/processtec.py	/^def montaNCM(plistaTEC):$/;"	kind:function	line:59
+montaTEC	../batch/processtec.py	/^def montaTEC():$/;"	kind:function	line:26
+montaTECResumo	../batch/processtec.py	/^def montaTECResumo(plistaNCM):$/;"	kind:function	line:87
+mynavbar	../webapp.py	/^def mynavbar():$/;"	kind:function	line:104
+name	../models/models.py	/^    name = Column(String(80), unique=True)$/;"	kind:variable	line:34
+nav	../webapp.py	/^nav = Nav()$/;"	kind:variable	line:35
+parcial	../tests/spell_test.py	/^    parcial = [word.atoken for word in$/;"	kind:variable	line:22
+parcialcorrect	../tests/spell_test.py	/^    parcialcorrect = [word.atoken for word in$/;"	kind:variable	line:24
+parent_id	../models/models.py	/^    parent_id = Column(Integer, ForeignKey('collections.id'))$/;"	kind:variable	line:37
+path	../blueprints/lacre/lacre.py	/^path = os.path.dirname(os.path.abspath(__file__))$/;"	kind:variable	line:15
+path	../models/models.py	/^path = os.path.dirname(os.path.abspath(__file__))$/;"	kind:variable	line:23
+path	../tests/models_test.py	/^path = os.path.dirname(os.path.abspath(__file__))$/;"	kind:variable	line:14
+position	../models/models.py	/^    position = Column(Integer)$/;"	kind:variable	line:111
+process	../models/collectionmanager.py	/^    def process(self, pdocument, ptokenizer):$/;"	kind:member	line:87
+process_collection	../models/collectionmanager.py	/^    def process_collection(self, ptokenizer, pengine):$/;"	kind:member	line:71
+processtec.py	../batch/processtec.py	1;"	kind:file	line:1
+processtectest.py	../tests/processtectest.py	1;"	kind:file	line:1
+rank	../jsonapp.py	/^def rank():$/;"	kind:function	line:40
+rank	../models/models.py	/^    rank = 1$/;"	kind:variable	line:17
+rankjson	../webapp.py	/^def rankjson():$/;"	kind:function	line:71
+ranktable	../webapp.py	/^def ranktable():$/;"	kind:function	line:43
+ranktablejson	../webapp.py	/^def ranktablejson():$/;"	kind:function	line:56
+raw	../models/models.py	/^    raw = 4$/;"	kind:variable	line:20
+read_conteiners_csv	../blueprints/lacre/lacre.py	/^def read_conteiners_csv():$/;"	kind:function	line:31
+remover_acentos	../batch/processtec.py	/^def remover_acentos(txt):$/;"	kind:function	line:15
+report_add	../blueprints/lacre/lacre.py	/^def report_add():$/;"	kind:function	line:213
+report_list	../blueprints/lacre/lacre.py	/^def report_list():$/;"	kind:function	line:201
+retrieved_collection	../tests/models_test.py	/^retrieved_collection = session.query(Collection).filter($/;"	kind:variable	line:59
+select_file	../blueprints/lacre/lacre.py	/^def select_file(filename):$/;"	kind:function	line:130
+selected_collection_id	../jsonapp.py	/^selected_collection_id = 1$/;"	kind:variable	line:30
+selection	../models/models.py	/^    selection = 3$/;"	kind:variable	line:19
+selection	../webapp.py	/^def selection():$/;"	kind:function	line:94
+session	../batch/importcollection.py	/^session = Session()$/;"	kind:variable	line:22
+session	../jsonapp.py	/^session = Session()$/;"	kind:variable	line:29
+session	../tests/collectionmanager_test.py	/^session = Session()$/;"	kind:variable	line:12
+session	../tests/models_test.py	/^session = Session()$/;"	kind:variable	line:22
+session	../tests/spell_test.py	/^session = Session()$/;"	kind:variable	line:13
+session	../tests/wordcloud_test.py	/^session = Session()$/;"	kind:variable	line:14
+session	../webapp.py	/^session = Session()$/;"	kind:variable	line:39
+set_collection	../jsonapp.py	/^def set_collection(collection_id):$/;"	kind:function	line:136
+somente_letras_e_numeros	../batch/processtec.py	/^def somente_letras_e_numeros(raw):$/;"	kind:function	line:20
+spell_test.py	../tests/spell_test.py	1;"	kind:file	line:1
+spelling_corrector.py	../util/spelling_corrector.py	1;"	kind:file	line:1
+splits	../util/spelling_corrector.py	/^    def splits(word):$/;"	kind:function	line:38
+stats	../tests/wordcloud_test.py	/^stats = counter.most_common()$/;"	kind:variable	line:31
+status	../blueprints/lacre/lacre.py	/^def status():$/;"	kind:function	line:227
+stopwords	../batch/processtec.py	/^stopwords = nltk.corpus.stopwords.words('portuguese')$/;"	kind:variable	line:12
+teccollection	../tests/collectionmanager_test.py	/^teccollection = session.query(Collection).filter_by(id=1).one()$/;"	kind:variable	line:15
+teccollection	../tests/wordcloud_test.py	/^teccollection = session.query(Collection).filter_by(id=1).one()$/;"	kind:variable	line:16
+test	../blueprints/lacre/lacre.py	/^def test():$/;"	kind:function	line:25
+test	../jsonapp.py	/^def test():$/;"	kind:function	line:34
+tf	../models/collectionmanager.py	/^    def tf(self, word):$/;"	kind:member	line:134
+title	../models/models.py	/^    title = Column(String(80), unique=True)$/;"	kind:variable	line:69
+tokenize_to_words	../batch/processtec.py	/^def tokenize_to_words(sentence, splitter=" "):$/;"	kind:function	line:130
+tokens	../util/spelling_corrector.py	/^def tokens(text):$/;"	kind:function	line:11
+upload_file	../blueprints/lacre/lacre.py	/^def upload_file():$/;"	kind:function	line:49
+vocab	../tests/spell_test.py	/^    vocab = [word.atoken for word in$/;"	kind:variable	line:19
+webapp.py	../webapp.py	1;"	kind:file	line:1
+wo1	../tests/models_test.py	/^wo1 = WordOccurrence(word1.id, document1.id, 1)$/;"	kind:variable	line:42
+wo2	../tests/models_test.py	/^wo2 = WordOccurrence(word2.id, document1.id, 2)$/;"	kind:variable	line:43
+wo3	../tests/models_test.py	/^wo3 = WordOccurrence(word3.id, document1.id, 3)$/;"	kind:variable	line:44
+wo4	../tests/models_test.py	/^wo4 = WordOccurrence(word1.id, document2.id, 1)$/;"	kind:variable	line:45
+wo5	../tests/models_test.py	/^wo5 = WordOccurrence(word2.id, document2.id, 2)$/;"	kind:variable	line:46
+wo6	../tests/models_test.py	/^wo6 = WordOccurrence(word3.id, document2.id, 3)$/;"	kind:variable	line:47
+word1	../tests/models_test.py	/^word1 = Word('Test')$/;"	kind:variable	line:34
+word2	../tests/models_test.py	/^word2 = Word('document')$/;"	kind:variable	line:35
+word3	../tests/models_test.py	/^word3 = Word('number')$/;"	kind:variable	line:36
+word_cloud_maker	../util/wordcloudmaker.py	/^def word_cloud_maker(frequencies, filepath, minrange=1, maxrange=0,$/;"	kind:function	line:5
+word_frequency_dict	../models/collectionmanager.py	/^    def word_frequency_dict(self, afilter=""):$/;"	kind:member	line:152
+word_id	../models/models.py	/^    word_id = Column(Integer, ForeignKey('words.id'))$/;"	kind:variable	line:109
+wordcloud	../jsonapp.py	/^def wordcloud():$/;"	kind:function	line:109
+wordcloud	../tests/wordcloud_test.py	/^wordcloud = WordCloud(max_font_size=40, width=800,$/;"	kind:variable	line:23
+wordcloud	../tests/wordcloud_test.py	/^wordcloud = WordCloud(max_font_size=40, width=800,$/;"	kind:variable	line:40
+wordcloud_range	../jsonapp.py	/^def wordcloud_range():$/;"	kind:function	line:121
+wordcloud_test.py	../tests/wordcloud_test.py	1;"	kind:file	line:1
+wordcloudmaker.py	../util/wordcloudmaker.py	1;"	kind:file	line:1

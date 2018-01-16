@@ -8,28 +8,46 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 from sqlalchemy import ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 import enum
+import os
 
 
-class CollectionType(enum.Enum):
+class CollectionType(enum.IntEnum):
     rank = 1
     filtered = 2
     selection = 3
     raw = 4
 
 
-engine = create_engine('sqlite:////home/ivan/flask/flaskTEC/tecrank/test.db')
+path = os.path.dirname(os.path.abspath(__file__))
+
+engine = create_engine('sqlite:////'+path+'/../test.db')
 Base = declarative_base()
 
 
 class Collection(Base):
+    """Parent Class. Designates a Collection of Documents as stated in
+    Information Retrieval common techniques"""
     __tablename__ = 'collections'
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=True)
     description = Column(String(200))
-    parent = relationship('Collection', back_populates='sons')
     collectiontype = Column(Integer)
+    parent_id = Column(Integer, ForeignKey('collections.id'))
+    children = relationship('Collection',
+                            backref=backref('parent', remote_side=[id])
+                            )
+
+    def get_child_type(self, collectiontype):
+        #  Returns child with desired type if exists. Returns itself otherwise
+        print(collectiontype)
+        for child_col in self.children:
+            print(child_col.description)
+            print(child_col.collectiontype)
+            if child_col.collectiontype == int(collectiontype):
+                return child_col
+        return self
 
     def __init__(self, name):
         self.name = name
@@ -41,11 +59,9 @@ class Collection(Base):
         return {'id': self.id, 'name': self.name}
 
 
-Collection.sons = relationship(
-    "Collection", order_by=Collection.id, back_populates="collection")
-
-
 class Document(Base):
+    """Documents as stated in Information Retrieval common techniques
+    Set of title and content (phrases, sentences, words)"""
     __tablename__ = 'documents'
     id = Column(Integer, primary_key=True)
     collection_id = Column(Integer, ForeignKey('collections.id'))
@@ -71,6 +87,9 @@ Collection.documents = relationship(
 
 
 class Word(Base):
+    """The tokenized unit chosen for indexing. A manager will process
+    the document with a chosen tokenizer and other preprocessing steps,
+    like stemming or character filtering and feed this table"""
     __tablename__ = 'words'
     id = Column(Integer, primary_key=True)
     atoken = Column(String(40), unique=True)

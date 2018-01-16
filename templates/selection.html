@@ -24,7 +24,7 @@
       $.getJSON('/_document_content/'+$('#titles').val(), {
       }, function(data) {
             console.log(data);
-            $('#contents').text(data);
+            $('span#contents').html(data);
       });
       return false;
     };
@@ -49,8 +49,7 @@
             <div class="col-md-8">
                 <div class="input-group h2">
                     <select id="titles" width="90%">
-                    <textarea id="contents">
-                    </textarea>
+                    </select>
                 </div>
             </div>
             <div class="col-md-2">
@@ -59,19 +58,9 @@
      </div> <!-- /#top -->
      <hr />
      <div id="list" class="row">
-        <div class="table-responsive col-md-12">
+        <div class="col-md-12">
         <span id="errors"></span>
-        <table class="table table-striped" cellspacing="0" cellpadding="0"
-         id="records_table">
-        <thead>
-            <tr>
-                <th>Subitem</th>
-                <th>Descrição completa</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        </table>
+        <span id="contents">Descrição e notas do capítulo</span>
         </div>
      </div> <!-- /#list -->
      <div id="bottom" class="row">

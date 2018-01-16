@@ -1,0 +1,63 @@
+{% extends "layoutbootstrap.html" %}
+
+{% block scripts %}
+ <script src="/static/js/jquery.js"></script>
+ <script src="/static/js/bootstrap.js"></script>
+ <script src="/static/js/jquery-ui.js"></script>
+ <script type="text/javascript">
+  $( function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min: {{ minrange }},
+      max: {{ maxrange }},
+      values: [ 0, {{ maxrange }} ],
+      slide: function( event, ui ) {
+        $( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      }
+    });
+    $( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#slider-range" ).slider( "values", 1 ) );
+    $( "#slider-range" ).slider({
+      change: function( event, ui ) {
+      }
+    });
+    $( "#slider-range" ).on( "slidechange", function( event, ui ) {
+        $.getJSON('/_wordcloud_range?minv='+ui.values[ 0 ] + "&maxv=" + ui.values[ 1 ], {});
+        d = new Date();
+        $("#wc").attr("src", "static/wc.jpg?"+d.getTime());
+    } );
+   });
+ </script>
+
+{% endblock %}
+  
+
+{% block content %}
+<div id="main" class="container-fluid">
+     <div id="top" class="row">
+           <div class="col-md-2">
+            </div>
+            <div class="col-md-8">
+                <p>
+                    <label for="amount">Frequency Range:</label>
+                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+                </p>
+                <div id="slider-range"></div>
+            </div>
+            <div class="col-md-2">
+            </div>
+     </div> <!-- /#top -->
+      <div id="list" class="row">
+        <div class="col-md-12">
+            <span id="errors"></span>
+            <span id="contents">Word Cloud</span>
+            <p>
+            <img id="wc" src="{{ image }}">
+            </p>
+        </div>
+     </div> <!-- /#list -->
+    <div id="bottom" class="row">
+        Copyleft IvanBrasilico 2017 - All stuff GPLv3 Licensed except explicited or from outer sources
+     </div> <!-- /#bottom -->
+ </div>  <!-- /#main -->
+{% endblock %}

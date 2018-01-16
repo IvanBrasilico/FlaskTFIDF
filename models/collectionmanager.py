@@ -31,7 +31,7 @@ from collections import Counter
 from sqlalchemy import func
 from sqlalchemy import text
 from sqlalchemy import or_
-from models.models import Collection, Document, Word, WordOccurrence
+from models.models import Collection, Document, Word, WordOccurrence, CollectionType
 
 
 class CollectionManager():
@@ -42,11 +42,16 @@ class CollectionManager():
         self.my_collection = pcollection
 
     def add_collection(self, collection_name):
-        """Receives the collection name and sets the collection"""
+        """Receives the collection name and retrieve or add the collection
+        Returns true if the collection already exists"""
+        self.my_collection = self.session.query(Collection).filter(
+                                Collection.name == collection_name).first()
+        if self.my_collection is not None:
+            return self.my_collection, True
         self.my_collection = Collection(collection_name)
         self.session.add(self.my_collection)
         self.session.commit()
-        return self.my_collection
+        return self.my_collection, False
 
     def add_document(self, ptitle, pcontent):
         """Receives title and content and adds a document
@@ -81,7 +86,7 @@ class CollectionManager():
 
     def process(self, pdocument, ptokenizer):
         """ Receives a word token generator and process the document with
-        the received function. Adds receiver words to collection for
+        the received function. Adds received words to collection for
         statistical analysis
         """
         wordmodellist = []
@@ -144,23 +149,36 @@ class CollectionManager():
             docs_tf[row['docid']] = row['tf']
         return docs_tf
 
-    def tf_idf(self, words, k=1.2, b=0.75):
+    def word_frequency_dict(self, afilter=""):
+        """Retrieves from database the absolute frequency from all words
+        on all documents for selected collection"""
+        # TODO: Insert collection on query
+        conn = self.session.connection()
+        sql = text("select w.atoken, count(wo.id) as tf " +
+                   "from word_occurrences  wo " +
+                   "inner join words w on wo.word_id = w.id " +
+                   "group by wo.word_id;")
+        result = conn.execute(sql)
+        docs_tf = {}
+        for row in result:
+            docs_tf[row['atoken']] = row['tf']
+        return docs_tf
+
+    def bm25(self, words, k=1.4, b=0.75):
         """Okapi BM25 implementation"""
         C = self.collection_lenght()
         avgdl = self.avg_dl()
         score = Counter()
         docs = {}
         words = words.split(" ")
+        print(words)
         for word in words:
-            docs = self.tf(word)
-            ndocs = len(docs)
-            try:
-                idf = math.log((C - ndocs + 0.5) / (ndocs + 0.5))
-            except ZeroDivisionError as e:
-                print(word)
-                print(ndocs)
-                print(e)
-            for docid, tf in docs.items():
+            word = word.strip(' ')
+            word = word.lower()
+            docs_tf = self.tf(word)
+            ndocs = len(docs_tf)
+            idf = math.log((C - ndocs + 0.5) / (ndocs + 0.5))
+            for docid, tf in docs_tf.items():
                 adocument = self.session.query(Document).filter_by(id=docid).one()
                 D = adocument.length
                 rank = idf * ((tf * (k+1)) / (tf + k + ((1 - b) + (b * D/avgdl))))
@@ -173,7 +191,7 @@ class CollectionManager():
                           'contents': doc.contents})
         return sorted(alist, key=lambda rank: rank['score'], reverse=True)
 
-    def tf_idf_cached(self, words, k=1.3, b=0.75):
+    def bm25_cached(self, words, k=1.4, b=0.75):
         """TODO: Create an optimized in memory Okapi BM25 implementation
         This version will retrieve all statistics from the DB
         once when first called (like a Singleton) and mantain it for
@@ -186,13 +204,34 @@ class CollectionManager():
         Returns a list of documents"""
         if not self.my_collection:
             return None
+        #  Try to choose a child best suited for this type of action
+        filter_collection = self.my_collection.get_child_type(
+                                                CollectionType.filtered
+                                                )
         document_list = self.session.query(Document).filter(
-            Document.collection_id == self.my_collection.id,
+            Document.collection_id == filter_collection.id,
             or_(Document.title.ilike(title_filter),
                 Document.contents.ilike(contents_filter))
             ).all()
         result = []
         for document in document_list:
-            result.append({"title": document.title,
+            result.append({"id": document.id, "title": document.title,
                            "contents": document.contents})
+        return result
+
+    def list_documents(self):
+        """Traditional SELECT id, title FROM documents (ALL)
+        Returns a list of documents, only id and title"""
+        if not self.my_collection:
+            return None
+        #  Try to choose a child best suited for this type of action
+        filter_collection = self.my_collection.get_child_type(
+                                                CollectionType.selection
+                                                )
+        print(filter_collection.description)
+        document_list = filter_collection.documents
+        result = []
+        for document in document_list:
+            result.append({"id": document.id,
+                           "title": document.title})
         return result

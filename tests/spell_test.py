@@ -5,7 +5,7 @@ Created on Sun Aug 27 16:31:52 2017
 @author: IvanBrasilico
 
 """
-import utils.spelling_corrector as spell
+import util.spelling_corrector as spell
 from sqlalchemy.orm import sessionmaker
 from models.models import Word, engine
 

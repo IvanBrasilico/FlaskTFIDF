@@ -5,45 +5,29 @@ Created on Sun Sep  3 18:28:17 2017
 
 @author: IvanBrasilico
 """
-from flask import jsonify, request, Flask
+from flask import jsonify, request, Flask, render_template
+from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
+
 from models.models import Collection, Word, Document
 from models.models import engine
-import utils.spelling_corrector as spell
 from models.collectionmanager import CollectionManager
-from flask_cors import CORS
-
+import util.spelling_corrector as spell
+from util.wordcloudmaker import word_cloud_maker
+from blueprints.lacre.lacre import lacre
+from blueprints.lacre.lacre import UPLOAD_FOLDER
 if __name__ == '__main__':
-    app = Flask(__name__, static_url_path='/static') 
+    app = Flask(__name__, static_url_path='/static')
     CORS(app)
 else:
     from webapp import app
 
+app.register_blueprint(lacre)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 Session = sessionmaker(bind=engine)
 session = Session()
-
-@app.route('/_rank')
-def rank():
-    """Get words, return ranked results"""
-    collection_name = request.args.get('collection_name', 0, type=str)
-    words = request.args.get('words', 0, type=str)
-    result = []
-    if words and isinstance(words, str):
-        collection_name = 'TEC'
-        collection = session.query(Collection).filter_by(name=collection_name).one()
-        manager = CollectionManager(session, collection)
-        result = manager.tf_idf(words)
-        """for word in words:
-            one_word = session.query(Word).filter_by(atoken=word).first()
-            if one_word:
-                for occurrence in session.query(WordOccurrence).filter_by(
-                    word_id=one_word.id).all():
-                    document_id = occurrence.document_id
-                    one_document = session.query(Document).filter_by(
-                        id=document_id).first()
-                    result.append(one_document.as_dict())
-                    """
-    return jsonify(result)
+selected_collection_id = 1
 
 
 @app.route('/_test')
@@ -52,10 +36,22 @@ def test():
                     {"title": "2", "contents": "TESTE 2"}])
 
 
+@app.route('/_rank')
+def rank():
+    """Get words, return ranked results"""
+    words = request.args.get('words', 0, type=str)
+    result = []
+    if words and isinstance(words, str):
+        collection = session.query(Collection).filter_by(
+                                               id=selected_collection_id).one()
+        manager = CollectionManager(session, collection)
+        result = manager.bm25(words)
+    return jsonify(result)
+
+
 @app.route('/_correct')
 def correct():
-    """Get words, return ranked results"""
-    collection_name = request.args.get('collection_name', 0, type=str)
+    """Get word, return sugestion from vocabulary"""
     words = request.args.get('words', 0, type=str)
     all_options = []
     if words and isinstance(words, str):
@@ -74,10 +70,9 @@ def correct():
 
 @app.route('/_filter_documents')
 def filter_documents():
-    collection_name = request.args.get('collection_name', 0, type=str)
     afilter = request.args.get('afilter', 0, type=str)
-    collection_name = 'TEC'
-    collection = session.query(Collection).filter_by(name=collection_name).one()
+    collection = session.query(Collection).filter_by(
+                                           id=selected_collection_id).one()
     manager = CollectionManager(session, collection)
     result = {}
     if afilter:
@@ -87,14 +82,10 @@ def filter_documents():
 
 @app.route('/_documents')
 def documents():
-    selected_collection_id = 1
-    collection = session.query(Collection).filter(
-            Collection.id == selected_collection_id).one()
-    result = []
-    document_list = collection.documents
-    for document in document_list:
-        result.append({"id": document.id,
-                       "title": document.title})
+    collection = session.query(Collection).filter_by(
+                                           id=selected_collection_id).one()
+    manager = CollectionManager(session, collection)
+    result = manager.list_documents()
     return jsonify(result)
 
 
@@ -114,10 +105,39 @@ def collections():
     return jsonify(result)
 
 
+@app.route('/_wordcloud')
+def wordcloud():
+    collection = session.query(Collection).filter_by(
+                                           id=selected_collection_id).one()
+    manager = CollectionManager(session, collection)
+    frequencies = manager.word_frequency_dict()
+    cloud_file, mincount, maxcount = word_cloud_maker(frequencies,
+                                                      "static/wc.jpg")
+    return render_template('wordcloud.html', image=cloud_file,
+                           minrange=mincount, maxrange=maxcount)
+
+
+@app.route('/_wordcloud_range')
+def wordcloud_range():
+    collection = session.query(Collection).filter_by(
+                                           id=selected_collection_id).one()
+    manager = CollectionManager(session, collection)
+    frequencies = manager.word_frequency_dict()
+    minv = int(request.args.get('minv', '1'))
+    maxv = int(request.args.get('maxv', '0'))
+    print(minv)
+    cloud_file, mincount, maxcount = word_cloud_maker(frequencies,
+                                     "/var/www/html/static/wc.jpg", minv, maxv)
+    return jsonify({'image': cloud_file,
+                    'minrange': mincount, 'maxrange': maxcount})
+
+
 @app.route('/_set_collection/<int:collection_id>')
 def set_collection(collection_id):
+    global selected_collection_id
     one_collection = session.query(Collection).filter_by(
                         id=collection_id).one()
+    selected_collection_id = one_collection.id
     return jsonify(one_collection.id)
 
 

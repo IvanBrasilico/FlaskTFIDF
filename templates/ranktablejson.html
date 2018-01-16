@@ -1,0 +1,52 @@
+{% block body %}
+
+<h1>Simple Table JQuery Example</h1>
+<p>
+  <input type="text" size="50" name="words" id="words" />
+  <button id="btnrank" type="button">Rank!
+                          </button>
+
+</p>
+<table id="records_table" border='1'>
+<thead>
+    <tr>
+        <th>Score</th>
+        <th>Subitem</th>
+        <th>Descrição completa</th>
+    </tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+<script src="/static/js/jquery.js"></script>
+<script type="text/javascript">
+  $(function() {
+    var submit_form = function(e) {
+      $.getJSON('/_rankjson', {
+        words: $('input[name="words"]').val(),
+      }, function(data) {
+        console.log(data);
+        $('#records_table tbody tr').remove();
+       $.each(data, function(i, item) {
+        $('<tr>').append(
+            $('<td>').text(item.score),
+            $('<td>').text(item.title),
+            $('<td>').text(item.contents)
+        ).appendTo('#records_table');
+        });
+       $('input[name="words"]').focus().select();
+      });
+      return false;
+    };
+    $('button#btnrank').bind('click', submit_form);
+    $('input[type="text"]').bind('keydown', function(e) {
+      if (e.keyCode == 13) {
+        submit_form(e);
+      }
+    });
+    $('input[name="words"]').focus();
+  });
+</script> 
+
+{% endblock %}
