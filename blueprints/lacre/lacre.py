@@ -8,7 +8,8 @@ Created on Mon Oct  2 11:21:24 2017
 import csv
 import os
 from flask import Blueprint, jsonify
-from flask import flash, request, redirect, url_for
+from flask import flash, request, redirect, render_template, url_for
+from flask_jwt import jwt_required
 from werkzeug.utils import secure_filename
 
 lacre = Blueprint('lacre', __name__)
@@ -19,6 +20,11 @@ ALLOWED_EXTENSIONS = set(['txt', 'csv'])
 # app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 memory_log = []
 memory_report = {}
+
+
+@lacre.route('/lacre')
+def index():
+    return render_template('lacre/index.html')
 
 
 @lacre.route('/_lacre/test')
@@ -64,21 +70,12 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-            return redirect(url_for('uploaded_file',
-                                    filename=filename))
-    return '''
-    <!doctype html>
-    <title>Fazer upload do arquivo do Carga</title>
-    <h1>Fazer Upload de novo arquivo</h1>
-    <form method=post enctype=multipart/form-data>
-      <p><input type=file name=file>
-         <input type=submit value=Upload>
-    </form>
-    '''
+            return redirect(url_for('lacre._uploaded_file', filename=filename))
+    return render_template('lacre/index.html')
 
 
 @lacre.route('/_lacre/upload', methods=['POST'])
-def _upload_file():
+def _uploaded_file():
     """Função simplificada para upload do arquivo CSV de extração
     Arquivo precisa de uma coluna chamada Conteiner e uma coluna chamada Lacre
     """
@@ -219,7 +216,6 @@ def report_add():
     else:
         lista = [container]
         memory_report[status] = lista
-
     return jsonify([])
 
 

@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/static/css/jquery-ui.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/jquery-ui.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+</head>
+<header>
+    <title>Fazer upload do arquivo do Carga</title>
+</header>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header header">
+                <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#97bf8afda672ef73a836d55f018b43c868a97bb5"
+                    data-toggle="collapse" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">Lacre</span>
+            </div>
+            <div class="navbar-collapse collapse" id="97bf8afda672ef73a836d55f018b43c868a97bb5">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/lacre" title="Site">Brasilico's Site</a>
+                    </li>
+                    <li class="active">
+                        <a href="/lacre/" title="Lacre">Lacre</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <input type="hidden" id="token" />
+    <div id="login"></div>
+    <h1>Lacre</h1>
+    <ul id="rowTab" class="nav nav-tabs nav-justified">
+        <li class="active">
+            <a data-toggle="tab" href="#upload">
+                <b>Upload</b>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#teste">
+                <b>Teste</b>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#list">
+                <b>List</b>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="upload" class="tab-pane fade in active">
+            <div id="upload_file" class="row">
+                <div class="col-xs-8">
+                    <h4>Fazer Upload de novo arquivo</h4>
+                    <form id="frmupload" action="/lacre/upload" method="POST" enctype="multipart/form-data">
+                        <input type=file name=file>
+                        <input type=submit value=Upload>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="teste" class="tab-pane fade">
+            <div id="apitest" class="row">
+                <div class="col-xs-8">
+
+                </div>
+            </div>
+        </div>
+        <div id="list" class="tab-pane fade">
+            <div id="listfile" class="row">
+                <div class="col-xs-8">
+                    <button class="btn btn-default" onclick="listar">Listar</button>
+                </div>
+            </div>
+        </div>
+        <div id="bottom" class="row">
+            <div class="col-md-12">
+                Copyleft IvanBrasilico 2017 - All stuff GPLv3 Licensed except explicited or from outer sources
+            </div>
+        </div>
+    </div>
+</body>
+<div id="loginmodal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <b>Login</b>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmlogin">
+                    <div class="form-group">
+                        <label for="username">Nome:</label>
+                        <input type="text" class="form-control" id="username" name="username" autofocus="autofocus">
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Senha:</label>
+                        <input type="password" class="form-control" id="senha" name="senha">
+                    </div>
+                    <button class="btn btn-block btn-primary btn-default" id="btnlogin" onsubmit="dispose()">
+                        <i class="fa fa-save"></i>&nbsp;Entrar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>
+<script src="/static/js/jquery.js"></script>
+<script src="/static/js/bootstrap.js"></script>
+<script src="/static/js/jquery-ui.js"></script>
+<script type="text/javascript">
+    $("#frmlogin").submit(function (event) {
+        event.preventDefault();
+    });
+    $(document).ready(function () {
+        $('#loginmodal').modal();
+    })
+    $(document).on('click', '#btnlogin', function () {
+        login();
+    });
+    var login = function () {
+        $('#jsonsuccessm').hide();
+        $('#jsonerrorm').hide();
+        url = '/api/auth'
+        data = { 'username': $('#username').val(), 'password': $('#senha').val() }
+        $.ajax({
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            data: JSON.stringify(data),
+            success: function (data) {
+                $('#token').val(data.access_token)
+                //test_token();
+            },
+            error: function (data) {
+                console.log(data);
+                if (data.statusText) {
+                    $('#errom').empty().append(data.statusText)
+                } else {
+                    $('#errom').empty().append('Servidor retornou erro. Usuário ou senha incorretos??')
+                }
+                $('#jsonerrorm').show();
+            }
+        });
+    }
+    var test_token = function () {
+        url = '/protected'
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        }
+        console.log(headers);
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    };
+    var listar = function () {
+        url = '/_lacre/list_files'
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        }
+        console.log(headers);
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        var token = $('#token').val();
+        if (!token) {
+            $('#loginmodal').modal();
+        }
+    });
+
+</script>

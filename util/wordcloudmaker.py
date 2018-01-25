@@ -1,4 +1,4 @@
-from collections import Counter
+'''from collections import Counter
 from wordcloud import WordCloud
 
 
@@ -30,3 +30,4 @@ def word_cloud_maker(frequencies, filepath, minrange=1, maxrange=0,
         print("IO error: {0}".format(err))
         return None
     return filepath, mincount, maxcount
+'''

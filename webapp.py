@@ -18,6 +18,7 @@
     :copyright: (c) 2017 by Ivan Brasilico.
     :license: GPL, see LICENSE for more details.
 """
+import os
 from flask import Flask, render_template, request, jsonify
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
@@ -112,5 +113,11 @@ def mynavbar():
 
 
 nav.init_app(app)
+app.config['DEBUG'] = os.environ.get('DEBUG', 'None') == '1'
+if app.config['DEBUG'] is True:
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.secret_key = 'secret_xxx'
+
 if __name__ == '__main__':
     app.run()

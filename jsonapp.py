@@ -8,14 +8,16 @@ Created on Sun Sep  3 18:28:17 2017
 from flask import jsonify, request, Flask, render_template
 from flask_cors import CORS
 from sqlalchemy.orm import sessionmaker
+from flask_jwt import JWT, current_identity, jwt_required
+from werkzeug.security import safe_str_cmp
 
 from models.models import Collection, Word, Document
 from models.models import engine
 from models.collectionmanager import CollectionManager
 import util.spelling_corrector as spell
-from util.wordcloudmaker import word_cloud_maker
+#from util.wordcloudmaker import word_cloud_maker
 from blueprints.lacre.lacre import lacre
-from blueprints.lacre.lacre import UPLOAD_FOLDER
+# from blueprints.lacre.lacre import UPLOAD_FOLDER
 if __name__ == '__main__':
     app = Flask(__name__, static_url_path='/static')
     CORS(app)
@@ -23,12 +25,57 @@ else:
     from webapp import app
 
 app.register_blueprint(lacre)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 Session = sessionmaker(bind=engine)
 session = Session()
 selected_collection_id = 1
 
+
+app.config.update(SECRET_KEY='secret_xxx',
+                      JWT_AUTH_URL_RULE='/api/auth')
+
+class User():
+    # proxy for a database of users
+    user_database = {'lacre': ('lacre', 'lacre')}
+
+    def __init__(self, username, password):
+        self.id = username
+        self.name = username
+        self.password = password
+
+    @classmethod
+    def get(cls, id):
+        return cls.user_database.get(id)
+
+
+def authenticate(username, password):
+    user_entry = User.get(username)
+    if user_entry is not None:
+        user = User(user_entry[0], user_entry[1])
+        if user and safe_str_cmp(user.password.encode('utf-8'),
+                                 password.encode('utf-8')):
+            return user
+    return None
+
+
+def identity(payload):
+    user = ''
+    user_id = payload['identity']
+    user_entry = User.get(user_id)
+    if user_entry is not None:
+        user = User(user_entry[0], user_entry[1])
+    return user
+
+
+jwt = JWT(app, authenticate, identity)
+
+
+
+@app.route('/protected')
+@jwt_required()
+def protected():
+    return '%s' % current_identity
 
 @app.route('/_test')
 def test():
@@ -104,7 +151,7 @@ def collections():
         result.append({'id': collection.id, 'name': collection.name})
     return jsonify(result)
 
-
+"""
 @app.route('/_wordcloud')
 def wordcloud():
     collection = session.query(Collection).filter_by(
@@ -130,7 +177,7 @@ def wordcloud_range():
                                      "/var/www/html/static/wc.jpg", minv, maxv)
     return jsonify({'image': cloud_file,
                     'minrange': mincount, 'maxrange': maxcount})
-
+"""
 
 @app.route('/_set_collection/<int:collection_id>')
 def set_collection(collection_id):
