@@ -71,7 +71,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             return redirect(url_for('lacre._uploaded_file', filename=filename))
-    return render_template('lacre/index.html')
+    return None
 
 
 @lacre.route('/_lacre/upload', methods=['POST'])
@@ -96,6 +96,7 @@ def _uploaded_file():
 
 
 @lacre.route('/_lacre/list_files')
+@jwt_required()
 def list_files():
     """Lista arquivos csv disponíveis para trabalhar
     """
@@ -113,6 +114,7 @@ def is_safe_path(basedir, path, follow_symlinks=True):
 
 
 @lacre.route('/_lacre/delete/file/<filename>')
+@jwt_required()
 def delete_file(filename):
     """ Recebe nome do arquivo, tenta apagar
     e retorna para página que chamou"""
@@ -124,6 +126,7 @@ def delete_file(filename):
 
 
 @lacre.route('/_lacre/select/file/<filename>')
+@jwt_required()
 def select_file(filename):
     """ Recebe nome do arquivo, tenta apagar
     e retorna para página que chamou"""
@@ -146,6 +149,7 @@ def lista_container(parcial_container_id):
 
 
 @lacre.route('/_lacre/container/<container_id>')
+@jwt_required()
 def container(container_id):
     """ Abre csv, procura contêiner, retorna linha ou "não encontrado" """
     container_list = read_conteiners_csv()
