@@ -33,7 +33,6 @@ def test():
     return jsonify([{"container": "HJCU000000", "lacre": "MGK00001"},
                     {"container": "MSKU1234567", "contents": "MSK12345"}])
 
-
 def read_conteiners_csv():
     """Abre a lista a ser trabalhada. Lista deve ser gerada a partir de
     uma extracão do Carga"""
@@ -44,6 +43,11 @@ def read_conteiners_csv():
             container_list[row['Conteiner']] = row
         return container_list
 
+@lacre.route('/_lacre/list_conteiner')
+@jwt_required()
+def list_conteiner():
+    lista_container = read_conteiners_csv()
+    return jsonify(lista_container)
 
 def allowed_file(filename):
     """Check allowed extensions"""
@@ -109,7 +113,6 @@ def is_safe_path(basedir, path, follow_symlinks=True):
     # resolves symbolic links
     if follow_symlinks:
         return os.path.realpath(path).startswith(basedir)
-
     return os.path.abspath(path).startswith(basedir)
 
 
@@ -122,11 +125,10 @@ def delete_file(filename):
     filepath = os.path.join(path, filename)
     if is_safe_path(path, filepath):
         os.remove(filepath)
-    return redirect("/lacre.html")
+    return jsonify("Excluido")
 
 
 @lacre.route('/_lacre/select/file/<filename>')
-@jwt_required()
 def select_file(filename):
     """ Recebe nome do arquivo, tenta apagar
     e retorna para página que chamou"""
@@ -134,7 +136,7 @@ def select_file(filename):
     if is_safe_path(path, filepath):
         global containers_file
         containers_file = filename
-    return redirect("/lacre.html")
+    return "Selecionado"
 
 
 @lacre.route('/_lacre/container_autocomplete/<parcial_container_id>')

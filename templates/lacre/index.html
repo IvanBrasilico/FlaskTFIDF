@@ -48,17 +48,22 @@
     <ul id="rowTab" class="nav nav-tabs nav-justified">
         <li class="active">
             <a data-toggle="tab" href="#upload">
-                <b>Upload</b>
+                <b>Upload CSV</b>
             </a>
         </li>
         <li>
-            <a data-toggle="tab" href="#teste">
-                <b>Teste</b>
+            <a data-toggle="tab" href="#conteiner">
+                <b>Conteiners</b>
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#consulta">
+                <b>Consultar lacre</b>
             </a>
         </li>
         <li>
             <a data-toggle="tab" href="#list">
-                <b>List</b>
+                <b>Listar</b>
             </a>
         </li>
     </ul>
@@ -73,8 +78,8 @@
                             <i>Informe um arquivo </i>
                         </h3>
                         <div class="input-group col-sm-5">
-                            <label class="btn btn-default" for="planilhaold">
-                                <input id="planilhaold" name="file" type="file" style="display:none" onchange="$('#upload-file-info').html(this.files[0].name)"> Escolher arquivo </label>
+                            <label class="btn btn-default" for="planilhald">
+                                <input id="planilhald" name="file" type="file" style="display:none" onchange="$('#upload-file-info').html(this.files[0].name)"> Escolher arquivo </label>
                             <div class="input-group-btn">
                                 <input class="btn btn-primary" type="submit" value="Submeter">
                             </div>
@@ -86,10 +91,40 @@
                 </div>
             </div>
         </div>
-        <div id="teste" class="tab-pane fade">
-            <div id="apitest" class="row">
+        <div id="conteiner" class="tab-pane fade">
+            <div id="listconteiner" class="row">
                 <div class="col-xs-8">
-
+                    <div class="col-xs-12">
+                        <label for="btnlistar"> Listar Conteiner</label>
+                        <button id="btnlistar" class="btn btn-default" onclick="Conteiner()">Listar</button>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="table">
+                            <table class="table table-bordered table-hover table-responsive" id="listcont">
+                                <tr></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="consulta" class="tab-pane fade">
+            <div id="consultalacre" class="row">
+                <div class="col-xs-8">
+                    <form id="frmupload" action="/lacre/upload" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="frmtoken" id="token" />
+                        <h3>
+                            <i>Informe o número do lacre</i>
+                        </h3>
+                        <div class="form-group col-sm-8">
+                            <div class="form-group col-sm-5">
+                                <input id="num_lacre" class="form-control" name="lacre" type="text" placeholder="Número do lacre">
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" type="submit" value="Consultar">
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -101,7 +136,8 @@
                 </div>
                 <div class="col-sm-4">
                     <div class="table">
-                        <table id="listcsv" class="table table-striped table-bordered table-hover table-condensed table-responsive">
+                        <table class="table table-bordered table-hover table-responsive" id="listcsv">
+                            <tr></tr>
                         </table>
                     </div>
                 </div>
@@ -153,6 +189,7 @@
     $(document).on('click', '#btnlogin', function () {
         login();
     });
+    
     var login = function () {
         url = '/api/auth'
         data = { 'username': $('#username').val(), 'password': $('#senha').val() }
@@ -200,6 +237,29 @@
             }
         });
     };
+    var Conteiner = function () {
+        url = '/_lacre/list_conteiner'
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        }
+        console.log(headers);
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (item) {
+                    $('#listcont').append($('<tr>' + '<td>' + item + '</td>' + '</tr>'));
+                });
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    };
     var listar = function () {
         url = '/_lacre/list_files'
         headers = {
@@ -215,14 +275,40 @@
             success: function (data) {
                 console.log(data);
                 $.each(data, function (i, item) {
-                    $('#listcsv').append($('<tr>').append(item));
+                    $('#listcsv').append(
+                        $('<tr>').append(
+                            $('<td>').append(item),
+                            $('<td>').append(
+                                '<input id="btn_exclui" type="button" class="btn  btn-danger" value="x" onclick="excluir_file('+"'"+item+"'" + ')">')
+                            ));
                 });
             },
             error: function (data) {
                 console.log(data);
             }
         });
-    }
+    };
+    
+    var excluir_file = function (file) {
+        url = '/_lacre/select/file/' + file
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        }
+        console.log(headers);
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    };
 
     $(document).ready(function () {
         var token = $('#token').val();
@@ -239,7 +325,8 @@
         color: silver;
     }
 
-    .table>tr {
+    .table {
         text-align: center;
+        color: black;
     }
 </style>
