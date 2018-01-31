@@ -60,6 +60,7 @@ def upload_file():
     """Função simplificada para upload do arquivo CSV de extração
     Arquivo precisa de uma coluna chamada Conteiner e uma coluna chamada Lacre
     """
+    result = ""
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
@@ -75,7 +76,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
             return redirect(url_for('lacre._uploaded_file', filename=filename))
-    return None
+    return jsonify([result])
 
 
 @lacre.route('/_lacre/upload', methods=['POST'])
@@ -136,7 +137,7 @@ def select_file(filename):
     if is_safe_path(path, filepath):
         global containers_file
         containers_file = filename
-    return "Selecionado"
+    return jsonify(filename)
 
 
 @lacre.route('/_lacre/container_autocomplete/<parcial_container_id>')
@@ -173,6 +174,7 @@ def container(container_id):
 
 
 @lacre.route('/_lacre/lacre/<lacre_id>')
+@jwt_required()
 def consulta_lacre(lacre_id):
     """ Abre csv, procura lacre, retorna linha ou "não encontrado" """
     container_list = read_conteiners_csv()
