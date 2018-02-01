@@ -8,7 +8,6 @@
     <link href="/static/css/jquery-ui.min.css" rel="stylesheet">
     <link href="/static/css/bootstrap.css" rel="stylesheet">
     <link href="/static/css/jquery-ui.css" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/bootstrap-responsive-tabs.css">    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 </head>
 
@@ -37,7 +36,7 @@
                         <a href="/lacre" title="Lacre">Lacre</a>
                     </li>
                     <li>
-                        <a href="/_lacre/upload" title="Upload">Upload</a>
+                        <a href="/lacre" title="Login">Login</a>
                     </li>
                 </ul>
             </div>
@@ -45,173 +44,198 @@
     </nav>
     <input type="hidden" id="token" />
     <div id="login"></div>
-    <ul id="rowTab" class="nav nav-tabs nav-justified responsive-tabs">
-        <li class="active">
-            <a data-toggle="tab" href="#index">
-                <b>Home</b>
-            </a>
-        </li>
-        <li>
-            <a data-toggle="tab" href="#consulta">
-                <b>Consultas</b>
-            </a>
-        </li>
-        <li>
-            <a data-toggle="tab" href="#list">
-                <b>Listar</b>
-            </a>
-        </li>
-        <li>
-            <a data-toggle="tab" href="#upload">
-                <b>Upload CSV</b>
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div id="index" class="tab-pane fade in active">
-            <div id="home" class="row">
-                <div class="col-xs-8">
-                    <h1>Bem-vindo ao sistema Lacre</h1>
+    <div class="container" id="content">
+        <div class="alert alert-danger alert-dismissible collapse" role="alert" id="jsonerror">
+            <button type="button" class="close" onclick="$('#jsonerror').hide()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span>
+                <p>
+                    <span id="erro"></span>
+                </p>
+            </span>
+        </div>
+        <div class="container">
+            {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{ message }}
+            </div>
+            {% endfor %} {% block page_content %}{% endblock %}
+        </div>
+        <ul id="rowTab" class="nav nav-tabs nav-justified">
+            <li class="active">
+                <a data-toggle="tab" href="#index">
+                    <b>Home</b>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#consulta">
+                    <b>Consultas</b>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#list">
+                    <b>Listar</b>
+                </a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#upload">
+                    <b>Upload CSV</b>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="index" class="tab-pane fade in active">
+                <div id="home" class="row">
+                    <div class="col-xs-8">
+                        <h1>Bem-vindo ao sistema Lacre</h1>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="upload" class="tab-pane fade">
-            <div id="upload_file" class="row">
+            <div id="upload" class="tab-pane fade">
+                <div id="upload_file" class="row">
+                    <div class="col-xs-8">
+                        <form id="upload">
+                            <h4>Fazer Upload de novo arquivo</h4>
+                            <h3>
+                                <i>Informe um arquivo </i>
+                            </h3>
+                            <div class="input-group col-sm-5">
+                                <input type="file" name="file" id="file" />
+                                <input type="button" value="Enviar" />
+                            </div>
+                        </form>
+                        <div id="preview"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="consulta" class="tab-pane fade">
                 <div class="col-xs-8">
-                    <h4>Fazer Upload de novo arquivo</h4>
-                    <form id="frmupload" action="/lacre/upload" method="POST" enctype="multipart/form-data">
-                        <input type="hidden" name="frmtoken" id="token" />
+                    <div id="consultalacre" class="col-sm-10">
                         <h3>
-                            <i>Informe um arquivo </i>
+                            <i>Informe o número do lacre</i>
                         </h3>
-                        <div class="input-group col-sm-5">
-                            <label class="btn btn-default" for="planilhald">
-                                <input id="planilhald" name="file" type="file" style="display:none" onchange="$('#upload-file-info').html(this.files[0].name)"> Escolher arquivo </label>
-                            <div class="input-group-btn">
-                                <input class="btn btn-primary" type="submit" value="Submeter">
+                        <div class="form-group col-sm-12">
+                            <div class="form-group col-sm-10">
+                                <input id="num_lacre" class="form-control" name="lacre" type="text" placeholder="Número do lacre">
+                            </div>
+                            <div class="form-group col-sm-1">
+                                <button class="btn btn-primary" id="btnlacre">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="table">
+                                <table class="table table-bordered table-hover table-responsive" id="conslacre">
+                                    <tr></tr>
+                                </table>
                             </div>
                         </div>
-                        <big>
-                            <span class='label label-success' id="upload-file-info"></span>
-                        </big>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div id="consulta" class="tab-pane fade">
-            <div class="row">
-                <div id="consultalacre" class="col-sm-6">
-                    <h3>
-                        <i>Informe o número do lacre</i>
-                    </h3>
-                    <div class="form-group col-sm-8">
-                        <div class="form-group col-sm-5">
-                            <input id="num_lacre" class="form-control" name="lacre" type="text" placeholder="Número do lacre">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" id="btnlacre">
-                                <i class="fa fa-search"></i>&nbsp;Consultar
-                            </button>
-                        </div>
-                        <div class="table">
-                            <table class="table table-bordered table-hover table-responsive" id="conslacre">
-                                <tr></tr>
-                            </table>
-                        </div>
                     </div>
-                </div>
-                <div id="consultaconteiner" class="col-sm-6">
-                    <h3>
-                        <i>Informe o Contêiner</i>
-                    </h3>
-                    <div class="form-group col-sm-8">
-                        <div class="form-group col-sm-5">
-                            <input id="num_cont" class="form-control" name="conteiner" type="text" placeholder="Contêiner">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary" id="btncont">
-                                <i class="fa fa-search"></i>&nbsp;Consultar
-                            </button>
-                        </div>
-                        <div class="table">
-                            <table class="table table-bordered table-hover table-responsive" id="conscont">
-                                <tr></tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="list" class="tab-pane fade">
-            <div class="col-xs-12">
-                <div id="listfile" class="row">
-                    <div class="col-sm-6">
+                    <div id="consultaconteiner" class="col-sm-10">
                         <h3>
-                            <i>Lista de CSVs</i>
+                            <i>Informe o contêiner se for parcial marque a caixa ao lado</i>
+                        </h3>
+                        <div class="form-group col-sm-12">
+                            <div class="form-group col-sm-8">
+                                <input id="num_cont" class="form-control" name="conteiner" type="text" placeholder="Contêiner">
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="custom-control custom-checkbox mr-sm-2">
+                                    <input type="checkbox" class="custom-control-input" id="chkcont">
+                                    <label class="custom-control-label" for="chkcont">Parcial</label>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-1">
+                                <button class="btn btn-primary" id="btncont">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                            <div class="table">
+                                <table class="table table-bordered table-hover table-responsive" id="conscont">
+                                    <tr></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div id="listfile" class="row">
+                        <h3>
+                            <i>Selecione o CSV a filtrar</i>
                             <button id="btnlistcsv" class="btn btn-primary">Listar</button>
                         </h3>
-                    </div>
-                </div>
-                <div id="listconteiner" class="row">
-                    <div class="col-sm-6">
-                        <h3>
-                            <i>Lista de Contêineres</i>
-                            <button id="btnlistcont" class="btn btn-primary">Listar</button>
-                        </h3>
+                        <div class="table">
+                            <table class="table table-bordered table-hover table-responsive" id="listcsv">
+                                <tr></tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div id="list" class="tab-pane fade">
+                <div class="col-xs-12">
+                    <div id="listconteiner" class="row">
+                        <div class="col-sm-6">
+                            <h3>
+                                <i>Contêineres</i>
+                                <button id="btnlistcont" class="btn btn-primary">Listar</button>
+                            </h3>
+                            <div class="table">
+                                <table class="table table-bordered table-hover table-responsive" id="listcont">
+                                    <tr></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="listlog" class="row">
+                        <div class="col-sm-6">
+                            <h3>
+                                <i>Logs</i>
+                                <button id="btnlistlog" class="btn btn-primary">Listar</button>
+                            </h3>
+                            <div class="table">
+                                <table class="table table-bordered table-hover table-responsive" id="listlog">
+                                    <tr></tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="listreport" class="row">
+                        <div class="col-sm-6">
+                            <h3>
+                                <i>Reports</i>
+                                <button id="btnlistreport" class="btn btn-primary">Listar</button>
+                            </h3>
+                            <div class="form-group col-sm-12">
+                                <div class="form-group col-sm-12">
+                                    <div class="col-sm-5">
+                                        <input id="report" class="form-control" name="report" type="text" placeholder="Contêiner">
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <input id="status" class="form-control" name="report" type="text" placeholder="Status">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button class="btn btn-default" id="btnreport" name="btnreport">Adicionar</button>
+                                    </div>
+                                </div>
+                                <div class="table">
+                                    <table class="table table-bordered table-hover table-responsive" id="listreport">
+                                        <tr></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="bottom" class="row">
+                <div class="col-md-12">
+                    Copyleft IvanBrasilico 2017 - All stuff GPLv3 Licensed except explicited or from outer sources
+                </div>
+            </div>
         </div>
-    </div>
-    <div id="bottom" class="row">
-        <div class="col-md-12">
-            Copyleft IvanBrasilico 2017 - All stuff GPLv3 Licensed except explicited or from outer sources
-        </div>
-    </div>
-    </div>
 </body>
-<div id="csvmodal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    <b>CSVs</b>
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="table">
-                    <table class="table table-bordered table-hover table-responsive" id="listcsv">
-                        <tr></tr>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="contmodal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    <b>Contêineres</b>
-                </h4>
-            </div>
-            <div class="modal-body">
-                <div class="table">
-                    <table class="table table-bordered table-hover table-responsive" id="listcont">
-                        <tr></tr>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
 <div id="loginmodal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -243,34 +267,50 @@
 <script src="/static/js/jquery.js"></script>
 <script src="/static/js/bootstrap.js"></script>
 <script src="/static/js/jquery-ui.js"></script>
-<script src="/static/js/jquery.bootstrap-responsive-tabs.min.js"></script>
 <script type="text/javascript">
     $("#frmlogin").submit(function (event) {
         event.preventDefault();
     });
+
+    // BUTTONS
+
     $(document).on('click', '#btnlogin', function () {
         login();
     });
-    $(document).on('click', '#btnlistcsv', function () {
-        listar();
-        $('#csvmodal').modal();
+    $(document).one('click', '#btnlistcsv', function () {
+        listar_csv();
     });
-    $(document).on('click', '#btnlistcont', function () {
-        Conteiner();
-        $('#contmodal').modal();
+    $(document).one('click', '#btnlistcont', function () {
+        conteiner();
+    });
+    $(document).on('click', '#btnlistlog', function () {
+        listar_log();
+    });
+    $(document).on('click', '#btnlistreport', function () {
+        listar_report();
+    });
+    $(document).on('click', '#btnreport', function () {
+        adiciona_report();
     });
     $(document).on('click', '#btnlacre', function () {
         var num_lacre = $('#num_lacre').val();
         consultar_lacre(num_lacre);
     });
-    $(document).on('click', '#btncont', function () {
-        var num_cont = $('#num_cont').val();
-        consultar_conteiner(num_cont);
-    });
     $(document).on('click', '#listcsv td:first-child', function () {
         var csv = $(this).text();
         selecionar_file(csv);
     });
+    $(document).on('click', '#btncont', function () {
+        var num_cont = $('#num_cont').val()
+        if ($('#chkcont').is(':checked')) {
+            consultar_conteiner_parcial(num_cont)
+        } else {
+            consultar_conteiner(num_cont)
+        }
+    });
+
+    // LOGIN
+
     var login = function () {
         url = '/api/auth'
         data = { 'username': $('#username').val(), 'password': $('#senha').val() }
@@ -318,7 +358,18 @@
             }
         });
     };
-    var Conteiner = function () {
+
+    $(document).ready(function () {
+        var token = $('#token').val();
+        if (!token) {
+            $('#loginmodal').modal('toggle');
+        }
+        $('#modal').modal('hide');
+    });
+
+    // LISTAR
+
+    var conteiner = function () {
         url = '/_lacre/list_conteiner'
         headers = {
             'Content-Type': 'application/json',
@@ -332,8 +383,12 @@
             dataType: 'json',
             success: function (data) {
                 console.log(data);
-                $.each(data, function (item) {
-                    $('#listcont').append($('<tr>' + '<td>' + item + '</td>' + '</tr>'));
+                $.each(data, function (i, item) {
+                    $('#listcont').append(
+                        $('<tr>').append(
+                            $('<td>').append(item.Conteiner),
+                            $('<td>').append(item.Lacre)
+                        ));
                 });
             },
             error: function (data) {
@@ -342,7 +397,97 @@
         });
     };
 
-    var listar = function () {
+    var listar_log = function () {
+        url = '/_lacre/list/log'
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        }
+        console.log(headers);
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data == '') {
+                    $('#erro').empty().append("Não há logs!")
+                    $('#jsonerror').show();
+                } else {
+                    $.each(data, function (item) {
+                        $('#listlog').append(
+                            $('<tr>').append(
+                                $('<td>').append(item)
+                            ));
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    };
+
+    var listar_report = function () {
+        url = '/_lacre/list/report'
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        }
+        console.log(headers);
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data == '') {
+                    $('#erro').empty().append("Não há reports!")
+                    $('#jsonerror').show();
+                } else {
+                    $.each(data, function (item) {
+                        $('#listreport').append(
+                            $('<tr>').append(
+                                $('<td>').append(item)
+                            ));
+                    });
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    };
+
+    var adiciona_report = function () {
+        var container = $('#report').val();
+        var status = $('#status').val();
+        url = '/_lacre/add/report?container=' + container + '&status=' + status
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        }
+        console.log(headers);
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    };
+
+    // CONSULTA
+
+    var listar_csv = function () {
         url = '/_lacre/list_files'
         headers = {
             'Content-Type': 'application/json',
@@ -372,7 +517,7 @@
     };
 
     var excluir_file = function (file) {
-        url = '/_lacre/select/file/' + file;
+        url = '/_lacre/delete/file/' + file;
         headers = {
             'Content-Type': 'application/json',
             'Authorization': 'JWT ' + $('#token').val()
@@ -429,7 +574,8 @@
                 console.log(data);
                 $.each(data, function (index, value) {
                     if (value.Lacre == 'Não encontrado') {
-                        alert("Não encontrado")
+                        $('#erro').empty().append("Lacre não encontrado!")
+                        $('#jsonerror').show();
                     } else {
                         $('#conslacre').append(
                             $('<tr>').append(
@@ -444,9 +590,33 @@
             }
         });
     };
+    var consultar_conteiner_parcial = function (num_parcial) {
+        url = '/_lacre/container_autocomplete/' + num_parcial;
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        };
+        console.log(headers);
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: 'get',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                $.each(data, function (i, container, x) {
+                    console.log(container)
+                    consultar_conteiner(container)
+                });
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+
+    };
 
     var consultar_conteiner = function (num_cont) {
-        //TODO: colocar checkbox e verificar se é parcial ou inteiro
         url = '/_lacre/container/' + num_cont;
         headers = {
             'Content-Type': 'application/json',
@@ -462,7 +632,8 @@
                 console.log(data);
                 $.each(data, function (index, value) {
                     if (value.Conteiner == 'Não encontrado') {
-                        alert("Não encontrado")
+                        $('#erro').empty().append("Contêiner não encontrado!")
+                        $('#jsonerror').show();
                     } else {
                         $('#conscont').append(
                             $('<tr>').append(
@@ -478,17 +649,81 @@
         });
     };
 
-    $(document).ready(function () {
-        var token = $('#token').val();
-        if (!token) {
-            $('#loginmodal').modal('toggle');
+    // UPLOAD
+
+    var Upload = function (file) {
+        this.file = file;
+    };
+
+    Upload.prototype.getType = function () {
+        return this.file.type;
+    };
+    Upload.prototype.getSize = function () {
+        return this.file.size;
+    };
+    Upload.prototype.getName = function () {
+        return this.file.name;
+    };
+    Upload.prototype.doUpload = function () {
+        var that = this;
+        console.log(that)
+        var formData = new FormData();
+
+        // add assoc key values, this will be posts values
+        formData.append("file", this.file, this.getName());
+        formData.append("upload_file", true);
+        url = '/_lacre/upload';
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'JWT ' + $('#token').val()
+        };
+        console.log(headers)
+        $.ajax({
+            headers: headers,
+            url: url,
+            type: "POST",
+            xhr: function () {
+                var myXhr = $.ajaxSettings.xhr();
+                if (myXhr.upload) {
+                    myXhr.upload.addEventListener('progress', that.progressHandling, false);
+                }
+                return myXhr;
+            },
+            success: function (data) {
+            },
+            error: function (error) {
+                // handle error
+            },
+            async: true,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            timeout: 60000
+        });
+    };
+
+    Upload.prototype.progressHandling = function (event) {
+        var percent = 0;
+        var position = event.loaded || event.position;
+        var total = event.total;
+        var progress_bar_id = "#progress-wrp";
+        if (event.lengthComputable) {
+            percent = Math.ceil(position / total * 100);
         }
-        $('#modal').modal('hide');
+        // update progressbars classes so it fits your code
+        $(progress_bar_id + " .progress-bar").css("width", +percent + "%");
+        $(progress_bar_id + " .status").text(percent + "%");
+    };
+
+    $("#file").on("change", function (e) {
+        var file = $(this)[0].files[0];
+        var upload = new Upload(file);
+        // upload.getSize()
+        // upload.getType
+        upload.doUpload();
     });
 
-    $('.responsive-tabs').responsiveTabs({
-        accordionOn: ['xs', 'sm'] // xs, sm, md, lg 
-    });
 </script>
 <style>
     body {

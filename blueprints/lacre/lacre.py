@@ -75,7 +75,7 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-            return redirect(url_for('lacre._uploaded_file', filename=filename))
+            # return redirect(url_for('lacre._uploaded_file', filename=filename))
     return jsonify([result])
 
 
@@ -130,6 +130,7 @@ def delete_file(filename):
 
 
 @lacre.route('/_lacre/select/file/<filename>')
+@jwt_required()
 def select_file(filename):
     """ Recebe nome do arquivo, tenta apagar
     e retorna para página que chamou"""
@@ -141,6 +142,7 @@ def select_file(filename):
 
 
 @lacre.route('/_lacre/container_autocomplete/<parcial_container_id>')
+@jwt_required()
 def lista_container(parcial_container_id):
     """ Para "autocomplete" carrega o csv e filtra campo contêiner"""
     container_list = read_conteiners_csv()
@@ -197,12 +199,14 @@ def consulta_lacre(lacre_id):
 
 
 @lacre.route('/_lacre/list/log')
+@jwt_required()
 def log():
     """Retorna o conteúdo da variável de log"""
     return jsonify(memory_log)
 
 
 @lacre.route('/_lacre/list/report')
+@jwt_required()
 def report_list():
     """Retorna o conteúdo da variável de report"""
     report = []
@@ -215,6 +219,7 @@ def report_list():
 
 
 @lacre.route('/_lacre/add/report')
+@jwt_required()
 def report_add():
     """Atualiza o conteúdo da variável de report"""
     container = request.args.get('container', '', type=str)
