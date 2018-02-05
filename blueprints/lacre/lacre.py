@@ -64,26 +64,25 @@ def upload_file():
     if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
+            result = 'Não há arquivo.'
         file = request.files['file']
         # if user does not select file, browser also
         # submit a empty part without filename
         if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
+            result = 'Não foi selecionado nenhum arquivo.'
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
+            result = 'Arquivo enviado com sucesso!'
             # return redirect(url_for('lacre._uploaded_file', filename=filename))
     return jsonify([result])
 
-
+"""
 @lacre.route('/_lacre/upload', methods=['POST'])
 def _uploaded_file():
-    """Função simplificada para upload do arquivo CSV de extração
+    '''Função simplificada para upload do arquivo CSV de extração
     Arquivo precisa de uma coluna chamada Conteiner e uma coluna chamada Lacre
-    """
+    '''
     result = ""
     if request.method == 'POST':
         # check if the post request has the file part.
@@ -97,7 +96,7 @@ def _uploaded_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-    return jsonify([result])
+    return jsonify([result])"""
 
 
 @lacre.route('/_lacre/list_files')

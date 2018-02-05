@@ -55,6 +55,16 @@
                 </p>
             </span>
         </div>
+        <div class="alert alert-success alert-dismissible collapse" role="alert" id="jsonsuccess">
+            <button type="button" class="close" onclick="$('#jsonsuccess').hide()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span>
+                <p>Sucesso:&nbsp;
+                    <span id="success"></span>
+                </p>
+            </span>
+        </div>
         <div class="container">
             {% for message in get_flashed_messages() %}
             <div class="alert alert-warning">
@@ -96,15 +106,20 @@
             <div id="upload" class="tab-pane fade">
                 <div id="upload_file" class="row">
                     <div class="col-xs-8">
-                        <form id="upload">
+                        <form id="upload-file" method="post" enctype="multipart/form-data">
                             <h4>Fazer Upload de novo arquivo</h4>
                             <h3>
                                 <i>Informe um arquivo </i>
                             </h3>
-                            <div class="input-group col-sm-5">
-                                <input type="file" name="file" id="file" />
-                                <input type="button" value="Enviar" />
-                            </div>
+                            <fieldset>
+                                <label class="btn btn-default" for="file">
+                                    <input name="file" type="file" class="btn btn-default" style="display:none" onchange="$('#upload-file-info').html(this.files[0].name)">
+                                </label>
+                                <button id="upload-file-btn" type="button" class="btn btn-default">Upload</button>
+                            </fieldset>
+                            <big>
+                                <span class='label label-success' id="upload-file-info"></span>
+                            </big>
                         </form>
                         <div id="preview"></div>
                     </div>
@@ -308,6 +323,10 @@
             consultar_conteiner(num_cont)
         }
     });
+    $(document).on('click', '#upload-file-btn', function () {
+        Upload();
+    });
+
 
     // LOGIN
 
@@ -651,85 +670,28 @@
 
     // UPLOAD
 
-    var Upload = function (file) {
-        this.file = file;
-    };
-
-    Upload.prototype.getType = function () {
-        return this.file.type;
-    };
-    Upload.prototype.getSize = function () {
-        return this.file.size;
-    };
-    Upload.prototype.getName = function () {
-        return this.file.name;
-    };
-    Upload.prototype.doUpload = function () {
-        var that = this;
-        console.log(that)
-        var formData = new FormData();
-
-        // add assoc key values, this will be posts values
-        formData.append("file", this.file, this.getName());
-        formData.append("upload_file", true);
-        url = '/_lacre/upload';
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': 'JWT ' + $('#token').val()
-        };
-        console.log(headers)
+    var Upload = function () {
+        var form_data = new FormData($('#upload-file')[0]);
+        url = '/lacre/upload';
         $.ajax({
-            headers: headers,
             url: url,
-            type: "POST",
-            xhr: function () {
-                var myXhr = $.ajaxSettings.xhr();
-                if (myXhr.upload) {
-                    myXhr.upload.addEventListener('progress', that.progressHandling, false);
-                }
-                return myXhr;
-            },
-            success: function (data) {
-            },
-            error: function (error) {
-                // handle error
-            },
-            async: true,
-            data: formData,
-            cache: false,
+            type: 'POST',
+            data: form_data,
             contentType: false,
+            cache: false,
             processData: false,
-            timeout: 60000
+            async: false,
+            success: function (data) {
+                console.log('Success!');
+                console.log(data)
+                $('#success').empty().append(data)
+                $('#jsonsuccess').show();
+            },
         });
     };
 
-    Upload.prototype.progressHandling = function (event) {
-        var percent = 0;
-        var position = event.loaded || event.position;
-        var total = event.total;
-        var progress_bar_id = "#progress-wrp";
-        if (event.lengthComputable) {
-            percent = Math.ceil(position / total * 100);
-        }
-        // update progressbars classes so it fits your code
-        $(progress_bar_id + " .progress-bar").css("width", +percent + "%");
-        $(progress_bar_id + " .status").text(percent + "%");
-    };
-
-    $("#file").on("change", function (e) {
-        var file = $(this)[0].files[0];
-        var upload = new Upload(file);
-        // upload.getSize()
-        // upload.getType
-        upload.doUpload();
-    });
-
 </script>
 <style>
-    body {
-        background-color: #003366;
-        color: silver;
-    }
 
     .table {
         text-align: center;
