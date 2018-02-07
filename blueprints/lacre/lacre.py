@@ -24,7 +24,7 @@ memory_report = {}
 
 @lacre.route('/lacre')
 def index():
-    return render_template('lacre/index.html')
+    return render_template('lacre.html')
 
 
 @lacre.route('/_lacre/test')
@@ -43,11 +43,6 @@ def read_conteiners_csv():
             container_list[row['Conteiner']] = row
         return container_list
 
-@lacre.route('/_lacre/list_conteiner')
-@jwt_required()
-def list_conteiner():
-    lista_container = read_conteiners_csv()
-    return jsonify(lista_container)
 
 def allowed_file(filename):
     """Check allowed extensions"""
@@ -77,7 +72,7 @@ def upload_file():
             # return redirect(url_for('lacre._uploaded_file', filename=filename))
     return jsonify([result])
 
-"""
+
 @lacre.route('/_lacre/upload', methods=['POST'])
 def _uploaded_file():
     '''Função simplificada para upload do arquivo CSV de extração
@@ -96,7 +91,7 @@ def _uploaded_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(UPLOAD_FOLDER, filename))
-    return jsonify([result])"""
+    return jsonify([result])
 
 
 @lacre.route('/_lacre/list_files')
@@ -141,7 +136,6 @@ def select_file(filename):
 
 
 @lacre.route('/_lacre/container_autocomplete/<parcial_container_id>')
-@jwt_required()
 def lista_container(parcial_container_id):
     """ Para "autocomplete" carrega o csv e filtra campo contêiner"""
     container_list = read_conteiners_csv()
