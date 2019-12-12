@@ -23,9 +23,9 @@ def somente_letras_e_numeros(raw):
     return clean
 
 
-def montaTEC():
-    arq = open(os.path.dirname(__file__)+"/tec.txt")
-    listaarquivoTEC = arq.readlines()
+def leTEC(filename=os.path.dirname(__file__)+"/tec.txt"):
+    with open(filename) as arq:
+        listaarquivoTEC = arq.readlines()
     return listaarquivoTEC
 
 

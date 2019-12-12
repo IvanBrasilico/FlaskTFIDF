@@ -10,7 +10,7 @@ from models.models import engine
 from models.collectionmanager import CollectionManager
 import batch.processtec as pt
 
-listaTEC = pt.montaTEC()
+listaTEC = pt.leTEC()
 listaNCM = pt.montaNCM(listaTEC)
 listaTECResumo = pt.montaTECResumo(listaNCM)
 listaCapitulos = pt.montaCapitulos(listaTEC)
