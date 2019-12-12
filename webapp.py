@@ -95,6 +95,10 @@ def selection():
     return render_template('selection.html')
 
 
+@app.route('/cloud.html')
+def cloud():
+    return render_template('wordcloud.html', minrange=1, maxrange=200)
+
 @app.route('/collection.html')
 def collection():
     return render_template('collection.html')
@@ -107,6 +111,7 @@ def mynavbar():
         View('Rank', 'index'),
         View('Filtered', 'filter'),
         View('Selection', 'selection'),
+        View('Cloud', 'cloud'),
         View('Change Collection', 'collection'),
     )
 
